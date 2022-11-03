@@ -1,0 +1,44 @@
+<ion-split-pane contentId="content">
+  <ion-menu contentId="content" side="start" #menu>
+    <ion-header>
+      <ion-toolbar color="secondary">
+        <ion-avatar slot="start">
+          <img alt="Silhouette of a person's head" src="assets/images/user.png" />
+        </ion-avatar>
+        <ion-title>
+          {{this.user?.names}}
+          <ionic-rating-component #rating
+              activeIcon = "star"
+              defaultIcon = "star-outline"
+              activeColor = "#ffc409"
+              defaultColor = "#f4f4f4"
+              readonly="true"
+              rating="3.5"
+              fontSize = "0.9em">
+          </ionic-rating-component>
+        </ion-title>
+      </ion-toolbar>
+    </ion-header>
+
+    <ion-content color="secondary">
+      <ion-list>
+        <ion-menu-toggle
+          auto-hide="false"
+          *ngFor="let nav of navs">
+          <ion-item
+            [routerLink]="nav.link"
+            routerDirection="root"
+            color="secondary"
+            [class.active-menu]="currentNav === nav.link">
+            {{nav.label | printdate}}
+            <ion-icon [color]="currentNav === nav.link ? 'primary': ''" slot="start" [name]="nav.icon"></ion-icon>
+            <ion-badge mode="ios" slot="end" *ngIf="nav.isNotifications && unreadRequestsNotifications.length > 0">{{unreadRequestsNotifications.length}}</ion-badge>
+          </ion-item>
+        </ion-menu-toggle>
+      </ion-list>
+    </ion-content>
+  </ion-menu>
+
+  <ion-router-outlet id="content" main></ion-router-outlet>
+
+</ion-split-pane>

@@ -1,0 +1,61 @@
+<ion-content color="secondary">
+  <div class="main-content">
+    <div class="logo-content bg-secondary">
+      <ion-img src="assets/images/logo-removebg-preview.png"></ion-img>
+    </div>
+
+    <div class="title">
+      <ion-title>{{'LOGIN.TITLE' | translate}}</ion-title>
+      <span>
+        {{'LOGIN.DESCRIPTION' | translate}}
+      </span>
+    </div>
+
+    <div class="form-content">
+      <form [formGroup]="loginForm" (ngSubmit)="onFormSubmit()">
+        <ion-list>
+          <ion-item color="secondary">
+            <ion-icon name="mail" slot="start" color="tertiary"></ion-icon>
+            <ion-input type="email" placeholder="{{'LOGIN.EMAIL.PLACEHOLDER' | translate}}" formControlName="email"></ion-input>
+          </ion-item>
+          <span class="error ion-padding" *ngIf="formIsSubmitted && errorControl.email.errors?.required">
+            {{'LOGIN.EMAIL.REQUIRED' | translate}}
+          </span>
+          <span class="error ion-padding" *ngIf="formIsSubmitted && errorControl.email.errors?.email">
+            {{'LOGIN.EMAIL.INVALID' | translate}}
+          </span>
+          <span class="error ion-padding" *ngIf="formIsSubmitted && errorControl.email.errors?.maxlength">
+            {{'LOGIN.EMAIL.MAXLENGTH' | translate}}
+          </span>
+          <ion-item color="secondary">
+            <ion-icon name="key" slot="start" color="tertiary"></ion-icon>
+            <ion-input [type]="passwordFieldType" placeholder="{{'LOGIN.PASSWORD.PLACEHOLDER' | translate}}" formControlName="password"></ion-input>
+            <ion-icon name="eye" slot="end" color="tertiary" class="ion-activatable ripple-parent" (click)="changePasswordType()">
+              <ion-ripple-effect></ion-ripple-effect>
+            </ion-icon>
+          </ion-item>
+          <span class="error ion-padding" *ngIf="formIsSubmitted && errorControl.password.errors?.required">
+            {{'LOGIN.PASSWORD.REQUIRED' | translate}}
+          </span>
+          <span class="error ion-padding" *ngIf="formIsSubmitted && errorControl.password.errors?.minlength">
+            {{'LOGIN.PASSWORD.MINLENGTH' | translate}}
+          </span>
+          <span class="error ion-padding" *ngIf="formIsSubmitted && errorControl.password.errors?.maxlength">
+            {{'LOGIN.PASSWORD.MAXLENGTH' | translate}}
+          </span>
+        </ion-list>
+        <div class="submit-button">
+          <ion-button *ngIf="!isProcessing" mode="ios" expand="block" type="submit">{{'LOGIN.SUBMIT' | translate}}</ion-button>
+          <ion-button *ngIf="isProcessing" mode="ios" disabled="true" expand="block"><ion-spinner mode="ios"></ion-spinner></ion-button>
+        </div>
+        <div class="login-text">
+          <span>{{'LOGIN.NEWER' | translate}}</span>&nbsp;
+          <a class="non-decorable ion-activatable ripple-parent" (click)="goToRegister()" routerLink="register">
+            {{'LOGIN.REGISTER' | translate}}
+            <ion-ripple-effect></ion-ripple-effect>
+          </a>
+        </div>
+      </form>
+    </div>
+  </div>
+</ion-content>

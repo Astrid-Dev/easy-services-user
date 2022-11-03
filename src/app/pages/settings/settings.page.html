@@ -1,0 +1,63 @@
+<ion-header>
+  <ion-toolbar color="secondary">
+    <ion-title>{{'SETTINGS.TITLE' | translate}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="!hasLoadedUserData">
+  <div class="loading-container" *ngIf="hasLoadedUserData === null">
+    <ion-spinner mode="ios" color="secondary"></ion-spinner>
+  </div>
+  <div *ngIf="hasLoadedUserData === false" class="error-container">
+    <ion-icon name="warning" color="danger"></ion-icon>
+    <ion-text color="danger">{{'LOADINGERROR.DATA' | translate}}</ion-text>
+    <ion-button mode="ios" (click)="loadUserData()">{{'LOADINGERROR.RELOAD' | translate}}</ion-button>
+  </div>
+</ion-content>
+
+<ion-backdrop *ngIf="isLoginOut"></ion-backdrop>
+
+<ion-content class="ion-padding" color="custom3" *ngIf="hasLoadedUserData">
+  <ion-list class="ion-margin-bottom">
+    <ion-item [id]="settingId(setting, i)" *ngFor="let setting of settingItems; index as i" lines="none" detail="true" class="ion-ripple-parent ion-activatable" (click)="onSettingClick(setting)">
+      <ion-badge mode="ios" slot="end" *ngIf="setting.hasRequestNotifications && unreadRequestsNotifications.length > 0">{{unreadRequestsNotifications.length}}</ion-badge>
+      <div class="icon">
+        <ion-icon [name]="setting.icon"></ion-icon>
+      </div>
+      {{setting.label | translate}}
+      <ion-icon *ngIf="setting.isLanguage" [src]="currentFlag" slot="end"></ion-icon>
+      <ion-ripple-effect></ion-ripple-effect>
+    </ion-item>
+  </ion-list>
+
+  <ion-popover mode="ios" trigger="popover-language-button" [dismissOnSelect]="true">
+    <ng-template>
+      <ion-content>
+        <ion-list>
+          <ion-radio-group [value]="currentLang">
+            <ion-item [button]="true" [detail]="false" *ngFor="let language of languages" (click)="changeLanguage(language.code)">
+              <ion-icon slot="start" [src]="language.flag"></ion-icon>
+              {{language.label}}
+              <ion-radio slot="end" [value]="language.code"></ion-radio>
+            </ion-item>
+          </ion-radio-group>
+        </ion-list>
+      </ion-content>
+    </ng-template>
+  </ion-popover>
+
+  <ion-popover mode="ios" trigger="popover-theme-button" [dismissOnSelect]="true">
+    <ng-template>
+      <ion-content>
+        <ion-list>
+          <ion-radio-group [value]="currentTheme">
+            <ion-item [button]="true" [detail]="false" *ngFor="let theme of themes" (click)="changeTheme(theme.value)">
+              {{theme.label | translate}}
+              <ion-radio slot="end" [value]="theme.value"></ion-radio>
+            </ion-item>
+          </ion-radio-group>
+        </ion-list>
+      </ion-content>
+    </ng-template>
+  </ion-popover>
+</ion-content>

@@ -1,0 +1,26 @@
+.item-icon{
+  font-size: 1.3em;
+  margin-right: 5px;
+}
+
+ion-card-title, ion-card-subtitle, ion-card-header{
+  width: 100%;
+}
+
+ion-card-header{
+  padding-right: 0;
+}
+
+.creation-date {
+  text-align: right;
+  ion-note {
+    font-size: 0.6em;
+  }
+}
+
+ion-card-title ion-row ion-col, ion-card-subtitle, div{
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden !important;
+  text-overflow: ellipsis;
+}

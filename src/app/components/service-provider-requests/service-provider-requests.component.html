@@ -1,0 +1,92 @@
+<ion-header>
+  <ion-toolbar color="secondary" position="top">
+    <ion-title *ngIf="!showSearchbar">{{'HISTORY.REQUESTS' | translate}}</ion-title>
+    <ion-searchbar show-clear-button="never" mode="md" [(ngModel)]="searchedRequestCode" (ngModelChange)="filterRequests()" placeholder="Code de la demande" *ngIf="showSearchbar"></ion-searchbar>
+
+    <!-- Hamburger -->
+    <ion-buttons slot="start">
+      <ion-menu-button autoHide="false"></ion-menu-button>
+    </ion-buttons>
+
+    <ion-buttons slot="end">
+<!--      <ion-button fill="clear">-->
+<!--        <ion-icon name="filter-outline"></ion-icon>-->
+<!--      </ion-button>-->
+      <ion-button (click)="toggleSearchbar()" fill="clear">
+        <ion-icon *ngIf="!showSearchbar" name="search-outline"></ion-icon>
+        <ion-icon *ngIf="showSearchbar" name="close-outline"></ion-icon>
+      </ion-button>
+      <ion-button fill="clear" (click)="showFilterModal()">
+        <ion-icon name="funnel-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="!hasLoadedRequests">
+  <div class="loading-container" *ngIf="hasLoadedRequests === null">
+    <ion-spinner mode="ios" color="secondary"></ion-spinner>
+  </div>
+  <div *ngIf="hasLoadedRequests === false" class="error-container">
+    <ion-icon name="warning" color="danger"></ion-icon>
+    <ion-text color="danger">{{'LOADINGERROR.DATA' | translate}}</ion-text>
+    <ion-button mode="ios" (click)="filterEnquiries()">{{'LOADINGERROR.RELOAD' | translate}}</ion-button>
+  </div>
+</ion-content>
+
+<ion-content color="custom3" *ngIf="hasLoadedRequests">
+  <ion-refresher slot="fixed" (ionRefresh)="filterRequests($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  <div class="no-result-found" *ngIf="requests.length === 0">
+    <img alt="" src="assets/images/no-result-found-removebg-preview.png"/>
+    <ion-text color="dark">{{'HISTORY.NORESULTFOUND' | translate}}</ion-text>
+  </div>
+
+  <ion-card (click)="onViewRequestDetails(request)" *ngFor="let request of requests; index as i" class="ion-ripple-parent ion-activatable">
+    <ion-item>
+      <ion-avatar slot="start">
+        <img alt="Silhouette of a person's head" src="assets/images/user.png" />
+      </ion-avatar>
+      <ion-card-header>
+        <ion-card-title>
+          <ion-row>
+            <ion-col size="7">
+              <span>#{{request.code}}</span>
+            </ion-col>
+            <ion-col size="5" class="creation-date">
+              <ion-note>{{printDate(request.created_at, true)}}</ion-note>
+            </ion-col>
+          </ion-row>
+        </ion-card-title>
+        <ion-card-subtitle>{{label(request?.service)}}</ion-card-subtitle>
+      </ion-card-header>
+    </ion-item>
+    <ion-card-content class="ion-ripple-parent ion-activatable">
+      <ion-row>
+        <ion-col size="8">
+          <div>
+            <ion-icon class="item-icon" name="location-outline"></ion-icon>
+            <ion-text>{{request.address}}</ion-text>
+          </div>
+          <div>
+            <ion-icon class="item-icon" name="calendar-outline"></ion-icon>
+            <ion-text>{{printDate(request.user_intervention_date)}}</ion-text>
+          </div>
+        </ion-col>
+        <ion-col size="4">
+          <div>
+            <ion-icon class="item-icon" name="cash-outline"></ion-icon>
+            <ion-text>{{request?.user_price ? (request.user_price + ' FCFA') : '-'}}</ion-text>
+          </div>
+          <div>
+            <ion-icon class="item-icon" name="scan-circle-outline"></ion-icon>
+            <ion-text [color]="requestStateColor(request.state)">{{requestStateLabel(request.state)}}</ion-text>
+          </div>
+        </ion-col>
+      </ion-row>
+      <ion-ripple-effect></ion-ripple-effect>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

@@ -1,0 +1,239 @@
+<ion-header>
+  <ion-toolbar color="secondary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{'NEWENQUIRY.TITLE' | translate}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="!hasLoadedServices || !hasLoadedUserData">
+  <div class="loading-container" *ngIf="hasLoadedServices === null || hasLoadedUserData === null">
+    <ion-spinner mode="ios" color="secondary"></ion-spinner>
+  </div>
+  <div *ngIf="hasLoadedServices === false || hasLoadedUserData === false" class="error-container">
+    <ion-icon name="warning" color="danger"></ion-icon>
+    <ion-text color="danger">{{'LOADINGERROR.DATA' | translate}}</ion-text>
+    <ion-button mode="ios" (click)="loadAll()">{{'LOADINGERROR.RELOAD' | translate}}</ion-button>
+  </div>
+</ion-content>
+
+<ion-content *ngIf="hasLoadedServices && hasLoadedUserData" #ionContent [scrollEvents]="true" class="ion-padding" color="custom3">
+
+  <div class="steps">
+    <div class="step-item" *ngFor="let step of steps; index as i">
+      <div [className]="classNameOfSlide(i)">
+        <span *ngIf="currentSlide <= i">{{i + 1}}</span>
+        <ion-icon *ngIf="currentSlide > i" name="checkmark"></ion-icon>
+      </div>
+      <div [className]="classNameOfConnector(i+1)"></div>
+    </div>
+  </div>
+
+  <swiper #swiperRef [allowTouchMove]="false" class="swiper">
+    <ng-template class="swiper-slide" swiperSlide>
+      <div class="container">
+        <h4 class="step-title">{{'NEWENQUIRY.WHICHSERVICE' | translate}}</h4>
+
+        <ion-radio-group [(ngModel)]="selectedService">
+          <ion-accordion-group color="danger">
+            <ion-accordion [value]="'accordion'+i" color="warning" *ngFor="let item of servicesList; let i = index;">
+              <ion-item slot="header" color="light">
+                <ion-text>{{label(item.parent)}}</ion-text>
+              </ion-item>
+              <div class="ion-padding" slot="content">
+                <ion-item lines="none" *ngFor="let service of item.children">
+                  <ion-text>{{label(service)}}</ion-text>
+                  <ion-radio slot="start" [value]="service.id"></ion-radio>
+                </ion-item>
+              </div>
+            </ion-accordion>
+          </ion-accordion-group>
+        </ion-radio-group>
+      </div>
+    </ng-template>
+    <ng-template class="swiper-slide" swiperSlide>
+      <div class="container">
+        <h4 class="step-title">{{'NEWENQUIRY.ENQUIRYDETAILS.TITLE' | translate}}</h4>
+
+        <form [formGroup]="enquiryDetailsForm">
+          <ion-list>
+            <ng-container *ngFor="let question of serviceQuestions; index as i" [ngSwitch]="question.type">
+             <ng-container *ngSwitchCase="'select'">
+              <ion-text class="ion-padding">
+                {{label(question)}}
+                <span class="text-danger" *ngIf="question?.required">*</span>
+              </ion-text>
+              <ion-item>
+                <ion-select [formControlName]="question.key" mode="ios" [placeholder]="question?.placeholder">
+                  <ion-select-option *ngFor="let option of question.options" [value]="option.value">{{label(option)}}</ion-select-option>
+                </ion-select>
+              </ion-item>
+             </ng-container>
+
+             <ng-container *ngSwitchCase="'textarea'">
+              <ion-text class="ion-padding">
+                {{label(question)}}
+                <span class="text-danger" *ngIf="question?.required">*</span>
+              </ion-text>
+              <ion-item>
+                <ion-textarea [formControlName]="question.key" mode="ios" [placeholder]="question?.placeholder"></ion-textarea>
+              </ion-item>
+             </ng-container>
+
+              <ng-container *ngSwitchCase="'checkbox'">
+                <ion-text class="ion-padding">
+                  {{label(question)}}
+                  <span class="text-danger" *ngIf="question?.required">*</span>
+                </ion-text>
+                <ion-item *ngFor="let option of question?.options; index as index" class="item-in-group" lines="none">
+                  <ion-checkbox (click)="onCheckboxesChange(question.key, $event)" [value]="option.value" slot="start"></ion-checkbox>
+                  <ion-label>{{label(option)}}</ion-label>
+                </ion-item>
+              </ng-container>
+
+              <ng-container *ngSwitchCase="'radio'">
+                <ion-text class="ion-padding">
+                  {{label(question)}}
+                  <span class="text-danger" *ngIf="question?.required">*</span>
+                </ion-text>
+                <ion-radio-group [formControlName]="question.key">
+                  <ion-item *ngFor="let option of question?.options" class="item-in-group" lines="none">
+                    <ion-label>{{label(option)}}</ion-label>
+                    <ion-radio [value]="option.value" slot="start"></ion-radio>
+                  </ion-item>
+                </ion-radio-group>
+              </ng-container>
+
+              <ng-container *ngSwitchCase="'datetime'">
+               <ion-text class="ion-padding">
+                 {{label(question)}}
+                 <span class="text-danger" *ngIf="question?.required">*</span>
+               </ion-text>
+               <ion-item>
+                <ion-datetime-button mode="ios" [datetime]="question.key"></ion-datetime-button>
+
+                <ion-modal [keepContentsMounted]="true" mode="ios">
+                  <ng-template>
+                    <ion-datetime [showDefaultButtons]="true" doneText="{{'SUBMIT.DONE' | translate}}"
+                                  cancelText="{{'SUBMIT.CANCEL' | translate}}"
+                                  [preferWheel]="true"
+                                  [formControlName]="question.key" mode="ios" [id]="question.key"></ion-datetime>
+                  </ng-template>
+                </ion-modal>
+               </ion-item>
+              </ng-container>
+
+              <ng-container *ngSwitchDefault>
+               <ion-text class="ion-padding">
+                 {{label(question)}}
+                 <span class="text-danger" *ngIf="question?.required">*</span>
+               </ion-text>
+               <ion-item>
+                 <ion-input [type]="question.type" [formControlName]="question.key" mode="ios" [placeholder]="question?.placeholder"></ion-input>
+               </ion-item>
+              </ng-container>
+            </ng-container>
+          </ion-list>
+        </form>
+      </div>
+    </ng-template>
+    <ng-template class="swiper-slide" swiperSlide>
+      <div class="container">
+        <h4 class="step-title">{{'NEWENQUIRY.DATEANDLOCATIONDETAILS.TITLE' | translate}}</h4>
+
+        <form [formGroup]="dateAndLocationForm">
+          <ion-list>
+            <ion-text class="ion-padding">{{'NEWENQUIRY.DATEANDLOCATIONDETAILS.DATE.LABEL' | translate}} <span class="text-danger">*</span></ion-text>
+            <ion-item *ngIf="currentSlide === 2">
+              <ion-datetime-button mode="ios" datetime="datetime"></ion-datetime-button>
+
+              <ion-modal [keepContentsMounted]="true" mode="ios">
+                <ng-template>
+                  <ion-datetime [showDefaultButtons]="true" doneText="{{'SUBMIT.DONE' | translate}}"
+                                cancelText="{{'SUBMIT.CANCEL' | translate}}"
+                                [min]="minDate"
+                                [max]="maxDate"
+                                [hourValues]="hoursList"
+                                [preferWheel]="true"
+                                formControlName="date" mode="ios" id="datetime"></ion-datetime>
+                </ng-template>
+              </ion-modal>
+            </ion-item>
+
+            <ion-text class="ion-padding">{{'NEWENQUIRY.DATEANDLOCATIONDETAILS.LOCATION.LABEL' | translate}} <span class="text-danger">*</span></ion-text>
+            <ion-item>
+              <ion-input inputmode="decimal" type="number" formControlName="latitude" mode="ios" placeholder="{{'NEWENQUIRY.DATEANDLOCATIONDETAILS.LOCATION.LATITUDE' | translate}}"></ion-input>
+              <ion-input inputmode="decimal" type="number" formControlName="longitude" mode="ios" placeholder="{{'NEWENQUIRY.DATEANDLOCATIONDETAILS.LOCATION.LONGITUDE' | translate}}"></ion-input>
+              <ion-button fill="clear" slot="end" color="primary" (click)="loadUserLocation()" *ngIf="!isLocalising">
+                <ion-icon name="location-outline"></ion-icon>
+              </ion-button>
+
+              <ion-button [disabled]="true" fill="clear" slot="end" color="primary" *ngIf="isLocalising">
+                <ion-spinner></ion-spinner>
+              </ion-button>
+            </ion-item>
+
+            <ion-text class="ion-padding">{{'NEWENQUIRY.DATEANDLOCATIONDETAILS.ADDRESS.LABEL' | translate}} <span class="text-danger">*</span></ion-text>
+            <ion-item>
+              <ion-input formControlName="address" mode="ios" type="text"></ion-input>
+            </ion-item>
+          </ion-list>
+        </form>
+      </div>
+    </ng-template>
+
+    <ng-template class="swiper-slide" swiperSlide>
+      <div class="container">
+        <h4 class="step-title">{{'NEWENQUIRY.END.TITLE' | translate}}</h4>
+
+        <div class="checkmark-container">
+          <ion-icon name="checkmark-circle-outline" color="success"></ion-icon>
+          <ion-text>{{'NEWENQUIRY.END.SUCCESS' | translate}}</ion-text>
+          <ion-text>{{'NEWENQUIRY.END.ENQUIRYCODE' | translate}} <span class="enquiry-code">{{enquiryCode}}</span></ion-text>
+        </div>
+      </div>
+    </ng-template>
+  </swiper>
+
+
+
+</ion-content>
+
+<ion-footer class="ion-padding">
+  <ion-toolbar *ngIf="hasLoadedServices">
+    <ng-container *ngIf="currentSlide > 0">
+      <ion-button *ngIf="canShowBackButton && !isCreatingEnquiry" [disabled]="!canGoBack" (click)="goBack()" slot="start" mode="ios" color="secondary" fill="outline">
+        <ion-icon slot="start" name="chevron-back-outline"></ion-icon>
+        {{'SUBMIT.BACK' | translate}}
+      </ion-button>
+      <ion-button *ngIf="canShowNextButton" [disabled]="!canGoForward" (click)="goForward()" slot="end" mode="ios">
+        {{'SUBMIT.NEXT' | translate}}
+        <ion-icon slot="end" name="chevron-forward"></ion-icon>
+      </ion-button>
+
+      <ion-button *ngIf="canShowSubmitButton && !isCreatingEnquiry" [disabled]="!canSubmitForm" (click)="onFormSubmit()" slot="end" mode="ios">
+        <ion-icon slot="start" name="add-circle-outline"></ion-icon>
+        <!--      {{'SUBMIT.NEXT' | translate}}-->
+        {{'NEWENQUIRY.SUBMIT' | translate}}
+      </ion-button>
+
+      <ion-button *ngIf="isCreatingEnquiry" [disabled]="true" expand="block" slot="end" mode="ios">
+        <ion-spinner></ion-spinner>
+      </ion-button>
+
+      <ion-button *ngIf="canShowEndButton" (click)="goToHistory()" expand="block" mode="ios">
+        {{'SUBMIT.END' | translate}}
+      </ion-button>
+    </ng-container>
+
+    <ng-container *ngIf="currentSlide === 0">
+      <ion-button *ngIf="!isLoadingServiceQuestions" (click)="loadCurrentServiceQuestions()" [disabled]="(selectedService === null)" expand="block" mode="ios">
+        {{'SUBMIT.START' | translate}}
+      </ion-button>
+      <ion-button *ngIf="isLoadingServiceQuestions" [disabled]="true" expand="block" mode="ios">
+        <ion-spinner></ion-spinner>
+      </ion-button>
+    </ng-container>
+  </ion-toolbar>
+</ion-footer>

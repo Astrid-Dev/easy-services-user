@@ -1,0 +1,42 @@
+.request-code{
+  font-weight: bold;
+  color: var(--ion-color-dark);
+}
+
+ion-grid{
+  ion-row{
+    ion-col{
+      ion-label, ion-text{
+        display: block;
+      }
+
+      ion-label{
+        font-style: italic;
+        font-weight: 100;
+        color: var(--ion-color-custom2)
+      }
+
+      ion-text{
+        color: var(--ion-color-dark);
+      }
+    }
+  }
+}
+
+ion-card-title, ion-card-subtitle .contact-item{
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden !important;
+  text-overflow: ellipsis;
+}
+
+.divider{
+  border: 2px solid transparent;
+  margin-left: 1em;
+  margin-right: 1em;
+}
+
+.contact-icon{
+  font-size: 1.3em;
+  margin-right: 5px;
+}

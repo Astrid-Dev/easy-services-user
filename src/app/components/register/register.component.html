@@ -1,0 +1,110 @@
+<ion-content color="secondary">
+  <div class="main-content">
+    <div class="logo-content bg-secondary">
+      <ion-img src="assets/images/logo-removebg-preview.png"></ion-img>
+    </div>
+
+    <div class="title">
+      <ion-title>{{'REGISTER.TITLE' | translate}}</ion-title>
+      <span>
+        {{'REGISTER.DESCRIPTION' | translate}}
+      </span>
+    </div>
+
+    <div class="form-content">
+      <form [formGroup]="registerForm" (ngSubmit)="onFormSubmit()">
+        <ion-list>
+          <ion-item color="secondary">
+            <ion-icon name="person" slot="start" color="tertiary"></ion-icon>
+            <ion-input type="text" placeholder="{{'REGISTER.USERNAME.PLACEHOLDER' | translate}}" formControlName="username"></ion-input>
+          </ion-item>
+          <span class="error ion-padding" *ngIf="formIsSubmitted && errorControl.username.errors?.required">
+            {{'REGISTER.USERNAME.REQUIRED' | translate}}
+          </span>
+          <span class="error ion-padding" *ngIf="formIsSubmitted && errorControl.username.errors?.minlength">
+            {{'REGISTER.USERNAME.MINLENGTH' | translate}}
+          </span>
+          <span class="error ion-padding" *ngIf="formIsSubmitted && errorControl.username.errors?.maxlength">
+            {{'REGISTER.USERNAME.MAXLENGTH' | translate}}
+          </span>
+          <ion-item color="secondary">
+            <ion-icon name="person-circle" slot="start" color="tertiary"></ion-icon>
+            <ion-input type="text" placeholder="{{'REGISTER.NAMES.PLACEHOLDER' | translate}}" formControlName="names"></ion-input>
+          </ion-item>
+          <span class="error ion-padding" *ngIf="formIsSubmitted && errorControl.names.errors?.required">
+            {{'REGISTER.NAMES.REQUIRED' | translate}}
+          </span>
+          <span class="error ion-padding" *ngIf="formIsSubmitted && errorControl.names.errors?.minlength">
+            {{'REGISTER.NAMES.MINLENGTH' | translate}}
+          </span>
+          <span class="error ion-padding" *ngIf="formIsSubmitted && errorControl.names.errors?.maxlength">
+            {{'REGISTER.NAMES.MAXLENGTH' | translate}}
+          </span>
+          <ion-item color="secondary">
+            <ion-icon name="mail" slot="start" color="tertiary"></ion-icon>
+            <ion-input type="email" placeholder="{{'REGISTER.EMAIL.PLACEHOLDER' | translate}}" formControlName="email"></ion-input>
+          </ion-item>
+          <span class="error ion-padding" *ngIf="formIsSubmitted && errorControl.email.errors?.required">
+            {{'REGISTER.EMAIL.REQUIRED' | translate}}
+          </span>
+          <span class="error ion-padding" *ngIf="formIsSubmitted && errorControl.email.errors?.email">
+            {{'REGISTER.EMAIL.INVALID' | translate}}
+          </span>
+          <span class="error ion-padding" *ngIf="formIsSubmitted && errorControl.email.errors?.maxlength">
+            {{'REGISTER.EMAIL.MAXLENGTH' | translate}}
+          </span>
+          <ion-item color="secondary">
+            <ion-icon name="call" slot="start" color="tertiary"></ion-icon>
+            <ion-input type="tel" placeholder="{{'REGISTER.PHONENUMBER.PLACEHOLDER' | translate}}" formControlName="phone_number"></ion-input>
+          </ion-item>
+          <span class="error ion-padding" *ngIf="formIsSubmitted && errorControl.phone_number.errors?.required">
+            {{'REGISTER.PHONENUMBER.REQUIRED' | translate}}
+          </span>
+          <span class="error ion-padding" *ngIf="formIsSubmitted && errorControl.phone_number.errors?.validCountryPhone">
+            {{'REGISTER.PHONENUMBER.INVALID' | translate}}
+          </span>
+          <span class="error ion-padding" *ngIf="formIsSubmitted && errorControl.phone_number.errors?.minlength">
+            {{'REGISTER.PHONENUMBER.MINLENGTH' | translate}}
+          </span>
+          <span class="error ion-padding" *ngIf="formIsSubmitted && errorControl.phone_number.errors?.maxlength">
+            {{'REGISTER.PHONENUMBER.MAXLENGTH' | translate}}
+          </span>
+          <ion-item color="secondary">
+            <ion-icon name="key" slot="start" color="tertiary"></ion-icon>
+            <ion-input type="password" placeholder="{{'REGISTER.PASSWORD.PLACEHOLDER' | translate}}" formControlName="password"></ion-input>
+          </ion-item>
+          <span class="error ion-padding" *ngIf="formIsSubmitted && errorControl.password.errors?.required">
+            {{'REGISTER.PASSWORD.REQUIRED' | translate}}
+          </span>
+          <span class="error ion-padding" *ngIf="formIsSubmitted && errorControl.password.errors?.minlength">
+            {{'REGISTER.PASSWORD.MINLENGTH' | translate}}
+          </span>
+          <span class="error ion-padding" *ngIf="formIsSubmitted && errorControl.password.errors?.maxlength">
+            {{'REGISTER.PASSWORD.MAXLENGTH' | translate}}
+          </span>
+          <ion-item color="secondary">
+            <ion-icon name="key" slot="start" color="tertiary"></ion-icon>
+            <ion-input type="password" placeholder="{{'REGISTER.CONFIRMPASSWORD.PLACEHOLDER' | translate}}" formControlName="confirm_password"></ion-input>
+          </ion-item>
+          <span class="error ion-padding" *ngIf="formIsSubmitted && errorControl.confirm_password.errors?.required">
+            {{'REGISTER.CONFIRMPASSWORD.REQUIRED' | translate}}
+          </span>
+          <span class="error ion-padding" *ngIf="formIsSubmitted && errorControl.confirm_password.errors?.confirmedValidator">
+            {{'REGISTER.CONFIRMPASSWORD.MUSTMATCH' | translate}}
+          </span>
+        </ion-list>
+        <div class="submit-button">
+          <ion-button *ngIf="!isProcessing" mode="ios" expand="block" type="submit">{{'REGISTER.SUBMIT' | translate}}</ion-button>
+          <ion-button *ngIf="isProcessing" mode="ios" disabled="true" expand="block"><ion-spinner mode="ios"></ion-spinner></ion-button>
+        </div>
+        <div class="login-text">
+          <span>{{'REGISTER.HAVEACCOUNT' | translate}}</span>&nbsp;
+          <a class="non-decorable ion-activatable ripple-parent" (click)="goToLogin()" routerLink="login">
+            {{'REGISTER.LOGIN' | translate}}
+            <ion-ripple-effect></ion-ripple-effect>
+          </a>
+        </div>
+      </form>
+    </div>
+  </div>
+</ion-content>

@@ -1,0 +1,48 @@
+.main-content{
+  width: 100%;
+  height: 100%;
+}
+
+.logo-content{
+  font-weight: bold;
+  color: var(--ion-color-primary);
+  font-style: italic;
+  margin: auto;
+}
+
+.title{
+  text-align: center;
+  color: white;
+  margin-bottom: 0.5em;
+  ion-title {
+    font-size: 2em;
+    font-weight: 900;
+    margin-bottom: 0.5em;
+  }
+}
+
+ion-list, ion-item{
+  background-color: var(--ion-color-secondary);
+}
+
+ion-item{
+  margin: 1em;
+  border-radius: 10px;
+  border: 2px solid var(--ion-color-tertiary);
+}
+
+.submit-button{
+  margin: 1em;
+}
+
+.login-text{
+  text-align: center;
+  margin-left: 1em;
+  margin-bottom: 1em;
+  margin-right: 1em;
+}
+
+.error{
+  font-size: small;
+  color: var(--ion-color-danger);
+}

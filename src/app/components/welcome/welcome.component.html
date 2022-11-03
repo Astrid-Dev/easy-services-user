@@ -1,0 +1,25 @@
+<ion-content>
+  <div class="main-content bg-secondary">
+    <div class="logo-content bg-secondary">
+      <ion-img src="assets/images/logo-removebg-preview.png"></ion-img>
+    </div>
+    <div class="image-content">
+      <ion-img src="assets/images/app-description-removebg-preview.png"></ion-img>
+    </div>
+    <div class="bottom-content">
+      <div class="buttons-content">
+        <div class="title">
+          <ion-title class="first-title">{{'WELCOME.TITLE1' | translate}}</ion-title>
+          <ion-title class="second-title">{{'WELCOME.TITLE2' | translate}}</ion-title>
+        </div>
+        <div class="description">
+          {{'WELCOME.DESCRIPTION' | translate}}
+        </div>
+        <div class="buttons">
+          <ion-button (click)="goToLogin()" mode="ios" expand="block" color="secondary">{{'WELCOME.LOGIN' | translate}}</ion-button>
+          <ion-button (click)="goToRegister()" mode="ios" expand="block" fill="outline" color="secondary" routerLink="home">{{'WELCOME.REGISTER' | translate}}</ion-button>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>

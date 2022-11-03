@@ -24,3 +24,130 @@
 @import "~@ionic/angular/css/text-alignment.css";
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
+@import url('https://fonts.googleapis.com/css?family=Poppins');
+
+@import "~swiper/swiper.min.css";
+@import "~swiper/swiper-bundle.css";
+@import "~swiper/modules/pagination/pagination.min.css";
+
+*{
+  font-family: "Poppins", sans-serif;
+}
+
+.bg-primary{
+  background-color: var(--ion-color-primary);
+}
+
+.bg-secondary{
+  background-color: var(--ion-color-secondary);
+}
+
+ion-button{
+  font-weight: bold;
+}
+
+.ripple-parent {
+  position: relative;
+  overflow: hidden;
+}
+
+.success-alert, .error-alert, .warning-alert
+{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+
+  div:first-child
+  {
+    height: 100%;
+    width: 20%;
+
+    ion-icon
+    {
+      font-size: 2.1em;
+      font-weight: bold;
+    }
+  }
+
+  div:last-child
+  {
+    height: 100%;
+    width: 80%;
+  }
+}
+
+.alert-icon{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.success-alert
+{
+  div:first-child
+  {
+    ion-icon
+    {
+      color: var(--ion-color-success);
+    }
+  }
+}
+
+.error-alert
+{
+  div:first-child
+  {
+    ion-icon
+    {
+      color: var(--ion-color-danger);
+    }
+  }
+}
+
+.warning-alert
+{
+  div:first-child
+  {
+    ion-icon
+    {
+      color: var(--ion-color-warning);
+    }
+  }
+}
+
+.non-decorable{
+  text-decoration: none;
+}
+
+.text-danger{
+  color: var(--ion-color-danger);
+  font-size: 1.2em;
+}
+
+.loading-container, .error-container, .no-result-found{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+
+  ion-spinner{
+    width: 2em;
+    height: 2em;
+  }
+
+  ion-icon{
+    font-size: 3em;
+  }
+
+  ion-text{
+    display: block;
+    text-align: center;
+  }
+}
+
+.no-result-found ion-text{
+  font-style: italic;
+}

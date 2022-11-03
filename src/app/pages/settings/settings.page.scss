@@ -1,0 +1,26 @@
+.icon{
+  width: 1.5em;
+  height: 1.5em;
+  background-color: var(--ion-color-custom1-tint);
+  font-size: 1.6em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.3em;
+  margin-right: 15px;
+  border-radius: 23%;
+  opacity: 0.4;
+}
+
+ion-list{
+  border-radius: 4%;
+}
+
+ion-item{
+  padding-bottom: 1em;
+  margin-top: 1em;
+}
+
+.item-detail-icon{
+  color: var(--ion-color-primary) !important;
+}

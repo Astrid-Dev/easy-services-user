@@ -1,0 +1,54 @@
+.main-content{
+  width: 100%;
+  height: 100%;
+}
+
+.image-content{
+  position: fixed;
+  bottom: 50%;
+  width: 100%;
+}
+
+.logo-content{
+  font-weight: bold;
+  color: var(--ion-color-primary);
+  font-style: italic;
+  margin: auto;
+}
+
+.bottom-content{
+  width: 100%;
+  height: 55vh;
+  position: fixed;
+  bottom: 0;
+
+  .buttons-content{
+    height: 60vh;
+    width: 100%;
+    background-color: var(--ion-color-primary);
+    border-top-left-radius: 27%;
+    border-top-right-radius: 27%;
+  }
+}
+
+ion-title{
+  font-size: 1.9em;
+  font-weight: 900;
+  text-align: center;
+  &.first-title{
+    color: var(--ion-color-secondary);
+  }
+  &.second-title{
+    color: white;
+  }
+}
+
+.description, .buttons{
+  text-align: center;
+  color: white;
+  margin: 1em 2em;
+}
+
+ion-button:first-of-type{
+  margin-bottom: 0.5em;
+}

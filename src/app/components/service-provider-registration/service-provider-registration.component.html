@@ -1,0 +1,52 @@
+<ion-header>
+  <ion-toolbar color="secondary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="settings"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{'SERVICEPROVIDERPROFILE.SERVICEPROVIDERREGISTRATION' | translate}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="!hasLoadedServices || !hasLoadedUserData">
+  <div class="loading-container" *ngIf="hasLoadedServices === null || hasLoadedUserData === null">
+    <ion-spinner mode="ios" color="secondary"></ion-spinner>
+  </div>
+  <div *ngIf="hasLoadedServices === false || hasLoadedUserData === false" class="error-container">
+    <ion-icon name="warning" color="danger"></ion-icon>
+    <ion-text color="danger">{{'LOADINGERROR.DATA' | translate}}</ion-text>
+    <ion-button mode="ios" (click)="loadAll()">{{'LOADINGERROR.RELOAD' | translate}}</ion-button>
+  </div>
+</ion-content>
+
+<ion-content *ngIf="hasLoadedServices && hasLoadedUserData" color="custom3">
+  <ion-item-divider>
+    <ion-label>{{'SERVICEPROVIDERPROFILE.SELECTSERVICES' | translate}}</ion-label>
+  </ion-item-divider>
+  <ion-accordion-group expand="inset">
+    <ion-accordion [value]="'accordion'+i" color="warning" *ngFor="let item of servicesList; let i = index;">
+      <ion-item slot="header" color="light">
+        <ion-text>{{label(item.parent)}}</ion-text>
+      </ion-item>
+      <div class="ion-padding" slot="content">
+        <ion-item>
+          <ion-text>{{'SUBMIT.SELECTALL' | translate}}</ion-text>
+          <ion-checkbox [disabled]="item.parent.hasCheckedAllChildren" (ngModelChange)="onCheckAllChildOfAService(item.parent.id)" [(ngModel)]="item.parent.hasCheckedAllChildren" slot="start"></ion-checkbox>
+        </ion-item>
+        <ion-item lines="none" *ngFor="let service of item.children; index as i">
+          <ion-text>{{label(service)}}</ion-text>
+          <ion-checkbox (ngModelChange)="onChildServiceChange(item.parent.id, service.id)" [(ngModel)]="service.isChecked" slot="start"></ion-checkbox>
+        </ion-item>
+      </div>
+    </ion-accordion>
+  </ion-accordion-group>
+
+  <div class="ion-padding submit-button">
+    <ion-button (click)="onSubmit()" *ngIf="!isProcessing" [disabled]="!canSubmitData" expand="block" mode="ios">
+      <ion-icon slot="start" name="checkmark-done-circle-outline"></ion-icon>
+      {{'SUBMIT.VALIDATE' | translate}}
+    </ion-button>
+    <ion-button *ngIf="isProcessing" [disabled]="true" expand="block" mode="ios">
+      <ion-spinner></ion-spinner>
+    </ion-button>
+  </div>
+</ion-content>

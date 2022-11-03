@@ -1,0 +1,104 @@
+<ion-header>
+  <ion-toolbar color="secondary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="settings"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{'ACCOUNT.TITLE' | translate}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="!hasLoadedUserData">
+  <div class="loading-container" *ngIf="hasLoadedUserData === null">
+    <ion-spinner mode="ios" color="secondary"></ion-spinner>
+  </div>
+  <div *ngIf="hasLoadedUserData === false" class="error-container">
+    <ion-icon name="warning" color="danger"></ion-icon>
+    <ion-text color="danger">{{'LOADINGERROR.DATA' | translate}}</ion-text>
+    <ion-button mode="ios" (click)="loadUserData()">{{'LOADINGERROR.RELOAD' | translate}}</ion-button>
+  </div>
+</ion-content>
+
+<ion-content color="custom3" class="ion-padding" *ngIf="hasLoadedUserData">
+  <form [formGroup]="userDataForm" (ngSubmit)="onFormSubmit()">
+    <ion-list>
+      <div class="image-container">
+        <div>
+          <ion-avatar>
+            <img alt="Silhouette of a person's head" src="assets/images/user.png" />
+          </ion-avatar>
+          <ion-fab-button type="file">
+            <ion-icon name="camera"></ion-icon>
+          </ion-fab-button>
+        </div>
+      </div>
+      <ion-label>
+        {{'ACCOUNT.USERNAME.PLACEHOLDER' | translate}}
+      </ion-label>
+      <ion-item>
+        <ion-input type="text" formControlName="username"></ion-input>
+      </ion-item>
+      <span class="error" *ngIf="formIsSubmitted && errorControl.username.errors?.required">
+        {{'ACCOUNT.USERNAME.REQUIRED' | translate}}
+      </span>
+      <span class="error" *ngIf="formIsSubmitted && errorControl.username.errors?.minlength">
+        {{'ACCOUNT.USERNAME.MINLENGTH' | translate}}
+      </span>
+      <span class="error" *ngIf="formIsSubmitted && errorControl.username.errors?.maxlength">
+        {{'ACCOUNT.USERNAME.MAXLENGTH' | translate}}
+      </span>
+      <ion-label>
+        {{'ACCOUNT.NAMES.PLACEHOLDER' | translate}}
+      </ion-label>
+      <ion-item>
+        <ion-input type="text" formControlName="names"></ion-input>
+      </ion-item>
+      <span class="error" *ngIf="formIsSubmitted && errorControl.names.errors?.required">
+        {{'ACCOUNT.NAMES.REQUIRED' | translate}}
+      </span>
+      <span class="error" *ngIf="formIsSubmitted && errorControl.names.errors?.minlength">
+        {{'ACCOUNT.NAMES.MINLENGTH' | translate}}
+      </span>
+      <span class="error" *ngIf="formIsSubmitted && errorControl.names.errors?.maxlength">
+        {{'ACCOUNT.NAMES.MAXLENGTH' | translate}}
+      </span>
+      <ion-label>
+        {{'ACCOUNT.EMAIL.PLACEHOLDER' | translate}}
+      </ion-label>
+      <ion-item>
+        <ion-input type="email" formControlName="email"></ion-input>
+      </ion-item>
+      <span class="error" *ngIf="formIsSubmitted && errorControl.email.errors?.required">
+        {{'ACCOUNT.EMAIL.REQUIRED' | translate}}
+      </span>
+      <span class="error" *ngIf="formIsSubmitted && errorControl.email.errors?.email">
+        {{'ACCOUNT.EMAIL.INVALID' | translate}}
+      </span>
+      <span class="error" *ngIf="formIsSubmitted && errorControl.email.errors?.maxlength">
+        {{'ACCOUNT.EMAIL.MAXLENGTH' | translate}}
+      </span>
+      <ion-label>{{'ACCOUNT.PHONENUMBER.PLACEHOLDER' | translate}}</ion-label>
+      <ion-item>
+        <ion-input type="tel" formControlName="phone_number"></ion-input>
+      </ion-item>
+      <span class="error" *ngIf="formIsSubmitted && errorControl.phone_number.errors?.required">
+        {{'ACCOUNT.PHONENUMBER.REQUIRED' | translate}}
+      </span>
+      <span class="error" *ngIf="formIsSubmitted && errorControl.phone_number.errors?.validCountryPhone">
+        {{'ACCOUNT.PHONENUMBER.INVALID' | translate}}
+      </span>
+      <span class="error" *ngIf="formIsSubmitted && errorControl.phone_number.errors?.minlength">
+        {{'ACCOUNT.PHONENUMBER.MINLENGTH' | translate}}
+      </span>
+      <span class="error" *ngIf="formIsSubmitted && errorControl.phone_number.errors?.maxlength">
+        {{'ACCOUNT.PHONENUMBER.MAXLENGTH' | translate}}
+      </span>
+    </ion-list>
+
+    <ion-button *ngIf="!isProcessing" mode="ios" class="submit-button" expand="block" type="submit">
+      {{'ACCOUNT.SUBMIT' | translate}}
+    </ion-button>
+    <ion-button *ngIf="isProcessing" [disabled]="true" mode="ios" class="submit-button" expand="block">
+      <ion-spinner></ion-spinner>
+    </ion-button>
+  </form>
+</ion-content>

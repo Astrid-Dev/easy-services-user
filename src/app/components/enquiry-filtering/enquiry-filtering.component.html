@@ -1,0 +1,64 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button fill="clear" (click)="cancel()">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content color="custom3">
+  <ion-list>
+    <ion-item-divider>
+      <ion-label>{{'ENQUIRYFILTERING.STATUS' | translate}}</ion-label>
+    </ion-item-divider>
+    <ion-item lines="none">
+      <ion-checkbox [(ngModel)]="checkAllStates" (ngModelChange)="onStatesChange(true)" [disabled]="checkAllStates" slot="start"></ion-checkbox>
+      <ion-text>
+        {{'ENQUIRYFILTERING.ALLSTATUS' | translate}}
+      </ion-text>
+    </ion-item>
+    <ion-item lines="none" *ngFor="let state of states; index as i">
+      <ion-checkbox (ngModelChange)="onStatesChange(false, i)" [(ngModel)]="state.isChecked" slot="start"></ion-checkbox>
+      <ion-text>
+        {{state.label}}
+      </ion-text>
+    </ion-item>
+
+    <ion-item-divider>
+      <ion-label>{{'ENQUIRYFILTERING.SORTBY' | translate}}</ion-label>
+    </ion-item-divider>
+
+    <ion-radio-group [(ngModel)]="filter.order_by">
+      <ion-item lines="none" *ngFor="let orderType of orderTypes">
+        <ion-text>{{orderType.label | translate}}</ion-text>
+        <ion-radio slot="start" [value]="orderType.value"></ion-radio>
+      </ion-item>
+    </ion-radio-group>
+
+    <ion-item-divider>
+      <ion-label>{{'ENQUIRYFILTERING.SORTORDER' | translate}}</ion-label>
+    </ion-item-divider>
+
+    <ion-radio-group [(ngModel)]="filter.order_direction">
+      <ion-item lines="none" *ngFor="let orderDirection of orderDirections">
+        <ion-text>{{orderDirection.label | translate}}</ion-text>
+        <ion-radio slot="start" [value]="orderDirection.value"></ion-radio>
+      </ion-item>
+    </ion-radio-group>
+  </ion-list>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-row>
+      <ion-col>
+        <ion-button (click)="onApply(true)" mode="ios" expand="block" fill="outline">{{'SUBMIT.CLEAR' | translate}}</ion-button>
+      </ion-col>
+      <ion-col>
+        <ion-button (click)="onApply(false)" mode="ios" expand="block">{{'SUBMIT.APPLY' | translate}}</ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-toolbar>
+</ion-footer>

@@ -1,0 +1,18 @@
+ion-list{
+  background-color: var(--ion-color-custom3);
+
+  ion-item{
+    border-radius: 10px;
+    border: 2px solid white;
+    margin: 0.5em 1em 1em;
+  }
+
+  ion-label{
+    color: var(--ion-color-custom2);
+  }
+
+  ion-text{
+    color: var(--ion-color-custom2);
+    display: inline-block;
+  }
+}

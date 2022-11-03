@@ -1,0 +1,70 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button fill="clear" (click)="cancel()">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content color="custom3">
+  <form [formGroup]="approbationForm">
+    <ion-list>
+      <ion-text class="ion-padding-horizontal ion-padding-top">
+        {{incomingDateLabel}}
+      </ion-text>
+      <ion-item>
+        <ion-input type="text" [disabled]="true" [value]="incomingDate"></ion-input>
+      </ion-item>
+
+      <ion-text class="ion-padding-horizontal ion-padding-top">{{'REQUESTAPPROBATION.YOURDATE' | translate}} <span class="text-danger">*</span></ion-text>
+      <ion-item>
+        <ion-datetime-button mode="ios" datetime="datetime"></ion-datetime-button>
+
+        <ion-modal [keepContentsMounted]="true" mode="ios">
+          <ng-template>
+            <ion-datetime [showDefaultButtons]="true" doneText="{{'SUBMIT.DONE' | translate}}"
+                          cancelText="{{'SUBMIT.CANCEL' | translate}}"
+                          [min]="minDate"
+                          [max]="maxDate"
+                          [hourValues]="hoursList"
+                          [preferWheel]="true"
+                          formControlName="date"
+                          mode="ios" id="datetime"></ion-datetime>
+          </ng-template>
+        </ion-modal>
+      </ion-item>
+
+      <ion-text class="ion-padding-horizontal ion-padding-top">
+        {{incomingPriceLabel}}
+      </ion-text>
+      <ion-item>
+        <ion-input style="text-align: center;" type="number" [disabled]="true" [value]="incomingPrice"></ion-input>
+      </ion-item>
+
+      <ion-text class="ion-padding-horizontal ion-padding-top">{{'REQUESTAPPROBATION.YOURPRICE' | translate}}<span class="text-danger">*</span></ion-text>
+      <ion-item>
+        <ion-button (click)="decreasePrice()" mode="ios" color="danger" slot="start">
+          <ion-icon name="remove"></ion-icon>
+        </ion-button>
+        <ion-input formControlName="price" style="text-align: center;" type="number" value="2000"></ion-input>
+        <ion-button (click)="increasePrice()" mode="ios" color="success" slot="end">
+          <ion-icon name="add"></ion-icon>
+        </ion-button>
+      </ion-item>
+    </ion-list>
+  </form>
+</ion-content>
+
+<ion-footer class="ion-padding">
+  <ion-toolbar>
+    <ion-button (click)="onSubmit()" *ngIf="!showLoader" [disabled]="!approbationForm.valid" mode="ios" expand="block">
+      {{'SUBMIT.SUBMIT' | translate}}
+    </ion-button>
+
+    <ion-button *ngIf="showLoader" [disabled]="true" mode="ios" expand="block">
+      <ion-spinner></ion-spinner>
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>

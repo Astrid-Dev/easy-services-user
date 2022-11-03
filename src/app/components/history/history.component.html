@@ -1,0 +1,89 @@
+<ion-header>
+  <ion-toolbar color="secondary">
+    <ion-searchbar show-clear-button="never" mode="md" [(ngModel)]="searchedEnquiryCode" (ngModelChange)="filterEnquiries()" placeholder="{{'HISTORY.SEARCHBARPLACEHOLDER' | translate}}e" *ngIf="showSearchbar && !isSelecting"></ion-searchbar>
+    <ion-title *ngIf="!showSearchbar || isSelecting">{{'HISTORY.TITLE' | translate}}</ion-title>
+    <ion-buttons slot="end" *ngIf="!isSelecting">
+      <ion-button (click)="toggleSearchbar()" fill="clear">
+        <ion-icon *ngIf="!showSearchbar" name="search-outline"></ion-icon>
+        <ion-icon *ngIf="showSearchbar" name="close-outline"></ion-icon>
+      </ion-button>
+      <ion-button fill="clear" (click)="showFilterModal()">
+        <ion-icon name="funnel-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+    <ion-buttons slot="end" *ngIf="isSelecting">
+      <ion-button fill="clear" *ngIf="canDelete">
+        <ion-icon name="trash-bin-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="!hasLoadedEnquiries">
+  <div class="loading-container" *ngIf="hasLoadedEnquiries === null">
+    <ion-spinner mode="ios" color="secondary"></ion-spinner>
+  </div>
+  <div *ngIf="hasLoadedEnquiries === false" class="error-container">
+    <ion-icon name="warning" color="danger"></ion-icon>
+    <ion-text color="danger">{{'LOADINGERROR.DATA' | translate}}</ion-text>
+    <ion-button mode="ios" (click)="filterEnquiries()">{{'LOADINGERROR.RELOAD' | translate}}</ion-button>
+  </div>
+</ion-content>
+
+<ion-content color="custom3" *ngIf="hasLoadedEnquiries">
+  <ion-refresher slot="fixed" (ionRefresh)="filterEnquiries($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  <div class="no-result-found" *ngIf="enquiries.length === 0">
+    <img alt="" src="assets/images/no-result-found-removebg-preview.png"/>
+    <ion-text color="dark">{{'HISTORY.NORESULTFOUND' | translate}}</ion-text>
+  </div>
+
+  <ion-card *ngFor="let enquiry of enquiries; index as i" class="ion-ripple-parent ion-activatable" (press)="onSelectItem(i)" (click)="onClickItem(i)">
+    <ion-item>
+      <ion-avatar slot="start">
+        <img alt="Silhouette of a person's head" src="assets/images/user.png" />
+      </ion-avatar>
+      <ion-card-header>
+        <ion-card-title>
+          <ion-row>
+            <ion-col size="7">
+              <span>#{{enquiry.item?.code}}</span>
+            </ion-col>
+            <ion-col size="5" class="creation-date">
+              <ion-note>{{printDate(enquiry.item?.created_at, true)}}</ion-note>
+            </ion-col>
+          </ion-row>
+        </ion-card-title>
+        <ion-card-subtitle>{{label(enquiry.item?.service)}}</ion-card-subtitle>
+      </ion-card-header>
+      <ion-checkbox *ngIf="isSelecting" slot="end" (click)="onClickItem(i)" [(ngModel)]="enquiry.checked"></ion-checkbox>
+    </ion-item>
+    <ion-card-content class="ion-ripple-parent ion-activatable" *ngIf="!enquiry.checked">
+      <ion-row>
+        <ion-col size="8">
+          <div>
+            <ion-icon class="item-icon" name="location-outline"></ion-icon>
+            <ion-text>{{enquiry.item.address}}</ion-text>
+          </div>
+          <div>
+            <ion-icon class="item-icon" name="calendar-outline"></ion-icon>
+            <ion-text>{{printDate(enquiry.item.user_intervention_date)}}</ion-text>
+          </div>
+        </ion-col>
+        <ion-col size="4">
+          <div>
+            <ion-icon class="item-icon" name="cash-outline"></ion-icon>
+            <ion-text>{{enquiry.item?.user_price}}</ion-text>
+          </div>
+          <div>
+            <ion-icon class="item-icon" name="scan-circle-outline"></ion-icon>
+            <ion-text [color]="enquiryStateColor(enquiry.item.state)">{{enquiryStateLabel(enquiry.item.state)}}</ion-text>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-card-content>
+    <ion-ripple-effect></ion-ripple-effect>
+  </ion-card>
+</ion-content>

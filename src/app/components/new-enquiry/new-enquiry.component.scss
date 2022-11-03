@@ -1,0 +1,145 @@
+.steps {
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.labels {
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  width: 100%;
+  height: 48px;
+  margin: 0;
+  padding: 0 15px;
+}
+
+.step-item {
+  flex-grow: 1;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  &:last-of-type{
+    flex-grow: unset;
+  }
+}
+
+.step-bubble {
+  width: 1.7em;
+  height: 1.7em;
+  border-radius: 50%;
+  background-color: var(--ion-color-custom1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  &.active{
+    background-color: var(--ion-color-primary);
+  }
+  //border: 3px solid #fff;
+  //margin: 0 17px;
+}
+
+.step-connector {
+  background-color: var(--ion-color-custom1);
+  flex-grow: 1;
+  height: 0.25em;
+
+  &.active{
+    background-color: var(--ion-color-primary);
+  }
+}
+
+ion-list{
+  background-color: var(--ion-color-custom3);
+
+  ion-item{
+    border-radius: 10px;
+    border: 2px solid white;
+    margin: 0.5em 1em 1.5em;
+
+    &.item-in-group{
+      margin-bottom: 0 !important;
+      margin-top: 0 !important;
+    }
+
+    &.item-in-group:last-of-type{
+      margin-bottom: 1.5em !important;
+    }
+
+    ion-select{
+      padding: 0.3em;
+    }
+  }
+
+  ion-label{
+    color: var(--ion-color-custom2);
+  }
+
+  ion-text{
+    color: var(--ion-color-custom2);
+    display: inline-block;
+  }
+}
+
+.step-title{
+  color: var(--ion-color-dark);
+  margin-bottom: 1.5em;
+}
+
+ng-template{
+  color: black;
+  background-color: #2a2a2a;
+}
+
+ng-template{
+  overflow: auto !important;
+}
+
+.swiper-slide img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.swiper-pagination-bullet {
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  line-height: 20px;
+  font-size: 12px;
+  color: #000;
+  opacity: 1;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.swiper-pagination-bullet-active {
+  color: #fff;
+  background: #007aff;
+}
+
+ion-accordion{
+  margin-top: 1em;
+  margin-bottom: 1em;
+  border-radius: 10px;
+}
+
+.checkmark-container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  ion-icon{
+    font-size: 4em;
+  }
+
+  ion-text{
+    color: var(--ion-color-custom2);
+    font-style: italic;
+    .enquiry-code{
+      color: var(--ion-color-dark);
+      font-weight: bold;
+    }
+  }
+}

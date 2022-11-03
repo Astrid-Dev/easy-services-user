@@ -1,0 +1,171 @@
+<ion-header>
+  <ion-toolbar color="secondary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="history"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{'ENQUIRYDETAILS.TITLE' | translate}} #{{enquiryCode}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="!hasLoadedEnquiryData || !hasLoadedUserData">
+  <div class="loading-container" *ngIf="hasLoadedUserData === null || hasLoadedEnquiryData === null">
+    <ion-spinner mode="ios" color="secondary"></ion-spinner>
+  </div>
+  <div *ngIf="hasLoadedEnquiryData === false || hasLoadedUserData === false" class="error-container">
+    <ion-icon name="warning" color="danger"></ion-icon>
+    <ion-text color="danger">{{'LOADINGERROR.DATA' | translate}}</ion-text>
+    <ion-button mode="ios" (click)="loadAll()">{{'LOADINGERROR.RELOAD' | translate}}</ion-button>
+  </div>
+</ion-content>
+
+<ion-backdrop *ngIf="isProcessing"></ion-backdrop>
+
+<ion-content *ngIf="hasLoadedEnquiryData && hasLoadedUserData">
+  <ng-container *ngIf="enquiryProvider">
+    <ion-item-divider>
+      <ion-label>{{'ENQUIRYDETAILS.ABOUTPROVIDER' | translate}}</ion-label>
+    </ion-item-divider>
+    <ion-card>
+      <ion-item color="custom3">
+        <ion-avatar slot="start">
+          <img alt="Silhouette of a person's head" src="assets/images/user.png" />
+        </ion-avatar>
+        <ion-card-header>
+          <ion-card-title>{{enquiryProvider?.user.names}}</ion-card-title>
+          <ion-card-subtitle>
+            <ion-row>
+              <ion-col>
+                <div class="contact-item">
+                  <ion-icon class="contact-icon" name="mail-outline"></ion-icon>
+                  <ion-text>{{enquiryProvider?.user.email}}</ion-text>
+                </div>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col>
+                <div class="contact-item">
+                  <ion-icon class="contact-icon" name="call-outline"></ion-icon>
+                  <ion-text>{{enquiryProvider?.user.phone_number}}</ion-text>
+                </div>
+              </ion-col>
+            </ion-row>
+          </ion-card-subtitle>
+        </ion-card-header>
+      </ion-item>
+    </ion-card>
+  </ng-container>
+
+  <ng-container *ngIf="enquiryData.state !== 0">
+    <ion-item-divider>
+      <ion-label>{{'ENQUIRYDETAILS.ABOUTTRADING' | translate}}</ion-label>
+    </ion-item-divider>
+    <ion-card color="custom3">
+      <ion-card-content>
+        <ion-grid>
+          <ion-row>
+            <ion-col size="8">
+              <ion-label>{{'ENQUIRYDETAILS.YOURINTERVETIONDATE' | translate}}</ion-label>
+              <ion-text>{{printDate(enquiryData.user_intervention_date)}}</ion-text>
+            </ion-col>
+            <ion-col size="4">
+              <ion-label>{{'ENQUIRYDETAILS.YOURINTERVETIONPRICE' | translate}}</ion-label>
+              <ion-text>{{enquiryData.user_price ? (enquiryData.user_price + ' FCFA') : '-'}}</ion-text>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size="8">
+              <ion-label>{{'ENQUIRYDETAILS.PROVIDERINTERVETIONDATE' | translate}}</ion-label>
+              <ion-text>{{enquiryData.provider_intervention_date ? printDate(enquiryData.provider_intervention_date) : "-"}}</ion-text>
+            </ion-col>
+            <ion-col size="4">
+              <ion-label>{{'ENQUIRYDETAILS.PROVIDERINTERVETIONPRICE' | translate}}</ion-label>
+              <ion-text>{{enquiryData.provider_price ? (enquiryData.provider_price + ' FCFA') : '-'}}</ion-text>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card-content>
+    </ion-card>
+  </ng-container>
+
+  <ion-item-divider>
+    <ion-label>{{'ENQUIRYDETAILS.ABOUTENQUIRY' | translate}}</ion-label>
+  </ion-item-divider>
+  <ion-card color="custom3">
+    <ion-card-content>
+      <div class="ion-text-center">
+        <span class="enquiry-code">#{{enquiryData.code}}</span>
+        <ion-text class="divider" *ngIf="enquiryData.state !== 1 && enquiryData.state !== 2"> | </ion-text>
+        <br *ngIf="enquiryData.state === 1 || enquiryData.state === 2"/>
+        <ion-text [color]="enquiryStateColor(enquiryData.state)">{{enquiryStateLabel(enquiryData.state)}}</ion-text>
+      </div>
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <ion-label>{{'ENQUIRYDETAILS.CATEGORY' | translate}}</ion-label>
+            <ion-text>{{label(enquiryService)}}</ion-text>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-label>{{'ENQUIRYDETAILS.SERVICE' | translate}}</ion-label>
+            <ion-text>{{label(enquiryService?.parent)}}</ion-text>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-label>{{'ENQUIRYDETAILS.ADDRESS' | translate}}</ion-label>
+            <ion-text>{{enquiryData.address}}</ion-text>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-label>{{'ENQUIRYDETAILS.CREATIONDATE' | translate}}</ion-label>
+            <ion-text>{{printDate(enquiryData.created_at, false)}}</ion-text>
+          </ion-col>
+        </ion-row>
+        <ion-row *ngFor="let answer of simpleAnswers; index as i">
+          <ion-col>
+            <ion-label>{{label(answer)}}</ion-label>
+            <ion-text>{{value(answer)}}</ion-text>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col *ngFor="let answer of arrayAnswers">
+            <ion-label>{{label(answer)}}</ion-label>
+            <div>
+              <ng-container *ngFor="let option of answer.values">
+                <!--                  <ion-checkbox disabled="true" checked="true"></ion-checkbox>-->
+                <ion-text>
+                  {{value(option)}}
+                </ion-text>
+              </ng-container>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
+
+<ion-footer *ngIf="hasLoadedEnquiryData && hasLoadedUserData">
+  <ion-toolbar *ngIf="enquiryData && enquiryData.state !== 0 && enquiryData.state !== 4">
+    <ion-row *ngIf="!isProcessing">
+      <ion-col *ngIf="canCancel">
+        <ion-button (click)="askConfirmation('cancellation')" color="danger" expand="block" mode="ios" fill="outline">{{'SUBMIT.ABANDON' | translate}}</ion-button>
+      </ion-col>
+      <ion-col *ngIf="canNegotiate">
+        <ion-button (click)="showNegotiationFormModal()" [color]="!canApprove ? 'primary' : 'warning'" mode="ios" expand="block">{{'SUBMIT.MAKEANOFFER' | translate}}</ion-button>
+      </ion-col>
+      <ion-col *ngIf="canApprove">
+        <ion-button (click)="askConfirmation('approbation')" color="success" mode="ios" expand="block">{{'SUBMIT.APPROVE' | translate}}</ion-button>
+      </ion-col>
+    </ion-row>
+    <ion-row *ngIf="isProcessing">
+      <ion-col>
+        <ion-button expand="block" fill="clear" [disabled]="true">
+          <ion-spinner></ion-spinner>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-toolbar>
+</ion-footer>

@@ -1,0 +1,18 @@
+ion-list{
+  background-color: var(--ion-color-secondary);
+}
+
+ion-item.active-menu::part(native) {
+  color: var(--ion-color-primary);
+  border-right: 8px solid var(--ion-color-primary);
+
+  ion-icon{
+    color: var(--ion-color-primary);
+  }
+}
+
+ion-avatar{
+  width: 3.5em;
+  height: 3.5em;
+  margin-left: 0.1em;
+}

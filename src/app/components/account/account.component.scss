@@ -1,0 +1,55 @@
+ion-list{
+    background-color: var(--ion-color-custom3);
+
+    .image-container{
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      div{
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      ion-fab-button{
+        position: absolute;
+        bottom: 0;
+        left: 8em;
+      }
+
+      ion-avatar{
+        width: 10em;
+        height: 10em;
+      }
+    }
+
+    ion-item{
+      border-radius: 10px;
+      border: 2px solid white;
+      margin: 0.5em 0 0.5em;
+
+      ion-select{
+        padding: 0.3em;
+      }
+    }
+
+    ion-label{
+      color: var(--ion-color-custom2);
+      margin-top: 1em;
+      display: block;
+    }
+  }
+
+.submit-button{
+  margin-bottom: 5em;
+  margin-top: 2em;
+}
+
+.error{
+  font-size: small;
+  color: var(--ion-color-danger);
+  display: block;
+}

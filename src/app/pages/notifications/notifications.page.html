@@ -1,0 +1,47 @@
+<ion-header>
+  <ion-toolbar color="secondary">
+    <ion-title>{{'NOTIFICATIONS.TITLE' | translate}}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button fill="clear">
+        <ion-icon name="trash-bin-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content color="custom3">
+
+  <ng-container *ngIf="notifications.length > 0">
+    <ion-card *ngFor="let notification of notifications; index as i">
+      <ion-item [class.unread]="!notification.is_read" class="ion-ripple-parent ion-activatable" (click)="onViewNotification(notification)">
+        <ion-avatar slot="start">
+          <img [src]="notificationImagePath(notification.data?.state)" alt=""/>
+        </ion-avatar>
+        <ion-card-header>
+          <ion-card-title>
+            <ion-row>
+              <ion-col size="7">
+                <span>{{notificationTitle(notification.data?.state)}}</span>
+              </ion-col>
+              <ion-col size="5" class="creation-date">
+                <ion-note>{{printDate(notification.created_at, true)}}</ion-note>
+              </ion-col>
+            </ion-row>
+          </ion-card-title>
+          <ion-note>
+            <ion-row>
+              <ion-col>
+                {{notificationDescription(notification.data?.state, notification.data?.enquiry_code)}}
+              </ion-col>
+            </ion-row>
+          </ion-note>
+        </ion-card-header>
+        <ion-ripple-effect></ion-ripple-effect>
+      </ion-item>
+    </ion-card>
+  </ng-container>
+
+  <div class="no-notifications" *ngIf="notifications.length === 0">
+    <img src="assets/images/no-notifications-removebg-preview.png" alt=""/>
+  </div>
+</ion-content>

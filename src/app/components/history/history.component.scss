@@ -1,0 +1,70 @@
+//.illustration{
+//  border-radius: 20%;
+//  width: 3em;
+//  height: 3em;
+//  margin: 0 15px 0 0;
+//  background: var(--ion-color-custom2);
+//}
+//
+//ion-card-header{
+//  width: 100%;
+//  padding-right: 0;
+//}
+//.item-title, .item-subtitle{
+//  display: inline-block;
+//  overflow: hidden;
+//  white-space: nowrap;
+//}
+//
+//.date, .state{
+//  text-align: end;
+//}
+//
+//.date{
+//  ion-note{
+//    font-size: 0.72em;
+//  }
+//}
+//
+//ion-card-title, ion-card-subtitle{
+//  width: 100%;
+//  white-space: nowrap;
+//  overflow: hidden !important;
+//  text-overflow: ellipsis;
+//}
+//
+//ion-col{
+//  vertical-align: middle;
+//}
+//
+//ion-card-header{
+//  padding: 0;
+//}
+
+
+.item-icon{
+  font-size: 1.3em;
+  margin-right: 5px;
+}
+
+ion-card-title, ion-card-subtitle, ion-card-header{
+  width: 100%;
+}
+
+ion-card-header{
+  padding-right: 0;
+}
+
+.creation-date {
+  text-align: right;
+  ion-note {
+    font-size: 0.6em;
+  }
+}
+
+ion-card-title ion-row ion-col, ion-card-subtitle, div{
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden !important;
+  text-overflow: ellipsis;
+}

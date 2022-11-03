@@ -1,0 +1,135 @@
+<ion-header>
+  <ion-toolbar color="secondary" position="top">
+    <ion-title>Dashboard</ion-title>
+
+    <!-- Hamburger -->
+    <ion-buttons slot="start">
+      <ion-menu-button autoHide="false"></ion-menu-button>
+    </ion-buttons>
+
+    <ion-buttons slot="end">
+      <ion-button fill="clear">
+        <ion-icon name="filter-outline"></ion-icon>
+      </ion-button>
+      <ion-button fill="clear">
+        <ion-icon name="funnel-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content color="custom3">
+
+<!--  <ion-item-group>-->
+<!--    <ion-item-divider>-->
+<!--      <ion-label>{{'SERVICEPROVIDERPROFILE.STATS.LEGEND' | translate}}</ion-label>-->
+<!--      <ion-checkbox [(ngModel)]="showLegend" class="ion-margin-end" slot="end"></ion-checkbox>-->
+<!--    </ion-item-divider>-->
+<!--    <ng-container *ngIf="showLegend">-->
+<!--      <ion-item>-->
+<!--        <ion-card slot="start" color="primary" class="legend-box"><ion-card-content></ion-card-content></ion-card>-->
+<!--        <ion-text class="legend-description">Offres faites par vous</ion-text>-->
+<!--      </ion-item>-->
+<!--      <ion-item>-->
+<!--        <ion-card slot="start" color="warning" class="legend-box"><ion-card-content></ion-card-content></ion-card>-->
+<!--        <ion-text class="legend-description">Offres approuvées</ion-text>-->
+<!--      </ion-item>-->
+<!--      <ion-item>-->
+<!--        <ion-card slot="start" color="success" class="legend-box"><ion-card-content></ion-card-content></ion-card>-->
+<!--        <ion-text class="legend-description">Requêtes résolues</ion-text>-->
+<!--      </ion-item>-->
+<!--      <ion-item>-->
+<!--        <ion-card slot="start" color="custom1" class="legend-box"><ion-card-content></ion-card-content></ion-card>-->
+<!--        <ion-text class="legend-description">Offres faites par des clients</ion-text>-->
+<!--      </ion-item>-->
+<!--      <ion-item>-->
+<!--        <ion-card slot="start" color="custom2" class="legend-box"><ion-card-content></ion-card-content></ion-card>-->
+<!--        <ion-text class="legend-description">Requêtes abandonées par des clients</ion-text>-->
+<!--      </ion-item>-->
+<!--      <ion-item>-->
+<!--        <ion-card slot="start" color="danger" class="legend-box"><ion-card-content></ion-card-content></ion-card>-->
+<!--        <ion-text class="legend-description">Requêtes abandonées par vous</ion-text>-->
+<!--      </ion-item>-->
+<!--    </ng-container>-->
+
+<!--  </ion-item-group>-->
+
+  <ion-item-group>
+    <ion-item-divider>
+      <ion-label>{{'SERVICEPROVIDERPROFILE.STATS.STATISTICS' | translate}}</ion-label>
+    </ion-item-divider>
+    <ion-row>
+      <ion-col>
+        <ion-card color="primary">
+          <ion-card-content class="stat-item">
+            <ion-icon slot="start" name="receipt-outline"></ion-icon>
+            {{getAStateRequestsNumber(1)}}
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+      <ion-col>
+        <ion-card color="warning">
+          <ion-card-content class="stat-item">
+            <ion-icon slot="start" name="checkmark-circle-outline"></ion-icon>
+            {{getAStateRequestsNumber(3)}}
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+      <ion-col>
+        <ion-card color="success">
+          <ion-card-content class="stat-item">
+            <ion-icon slot="start" name="thumbs-up-outline"></ion-icon>
+            {{getAStateRequestsNumber(4)}}
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-card color="custom1">
+          <ion-card-content class="stat-item">
+            <ion-icon slot="start" name="receipt-outline"></ion-icon>
+            {{getAStateRequestsNumber(2)}}
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+      <ion-col>
+        <ion-card color="custom2">
+          <ion-card-content class="stat-item">
+            <ion-icon slot="start" name="close-outline"></ion-icon>
+            {{getAStateRequestsNumber(0, 1)}}
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+      <ion-col>
+        <ion-card color="danger">
+          <ion-card-content class="stat-item">
+            <ion-icon slot="start" name="close-circle-outline"></ion-icon>
+            {{getAStateRequestsNumber(0, 2)}}
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col *ngIf="statisticsPieChart.length > 0">
+        <ngx-charts-pie-chart
+          [scheme]="pieChartOptions.colorScheme"
+          [results]="statisticsPieChart"
+          [gradient]="pieChartOptions.gradient"
+          [legend]="showLegend"
+          [legendPosition]="pieChartOptions.legendPosition"
+          [labels]="pieChartOptions.showLabels"
+          [doughnut]="pieChartOptions.isDoughnut"
+          [view]="pieChartOptions.view"
+        >
+        </ngx-charts-pie-chart>
+      </ion-col>
+    </ion-row>
+  </ion-item-group>
+
+  <ion-item-group>
+    <ion-item-divider>
+      <ion-label>{{'SERVICEPROVIDERPROFILE.STATS.ACTIVITIESDIAGRAM' | translate}}</ion-label>
+    </ion-item-divider>
+    <img src="assets/images/2410566.jpg" alt=""/>
+  </ion-item-group>
+</ion-content>
