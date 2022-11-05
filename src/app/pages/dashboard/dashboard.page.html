@@ -13,7 +13,7 @@
               activeColor = "#ffc409"
               defaultColor = "#f4f4f4"
               readonly="true"
-              rating="3.5"
+              [rating]="3.5"
               fontSize = "0.9em">
           </ionic-rating-component>
         </ion-title>
@@ -30,7 +30,7 @@
             routerDirection="root"
             color="secondary"
             [class.active-menu]="currentNav === nav.link">
-            {{nav.label | printdate}}
+            {{nav.label | translate}}
             <ion-icon [color]="currentNav === nav.link ? 'primary': ''" slot="start" [name]="nav.icon"></ion-icon>
             <ion-badge mode="ios" slot="end" *ngIf="nav.isNotifications && unreadRequestsNotifications.length > 0">{{unreadRequestsNotifications.length}}</ion-badge>
           </ion-item>

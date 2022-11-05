@@ -10,6 +10,7 @@ import {
 } from "../../helpers/helpers.functions";
 import {State} from "../../models/Filter";
 import {TranslationService} from "../../services/translation.service";
+import {Color} from "@swimlane/ngx-charts";
 
 @Component({
   selector: 'app-service-provider-stats',
@@ -22,20 +23,21 @@ export class ServiceProviderStatsComponent implements OnInit {
 
   user!: User;
 
-  showLegend: boolean = false;
-
   statistics: Statistic[] = [];
   pieChartOptions = {
-    gradient: true,
-    showLegend: true,
-    showLabels: true,
-    isDoughnut: false,
-    legendPosition: 'below',
-    view: [window.innerWidth, 400],
-    colorScheme : {
-      domain: ['#b1a398', '#eb445a', '#ffc409', '#2fdf75']
-    }
+
   }
+
+  gradient = true;
+  showLegend = true;
+  showLabels = true;
+  isDoughnut = false;
+  legendPosition: 'below';
+  view: any = [window.innerWidth, 400];
+  colorScheme: any = {
+    domain: ['#b1a398', '#eb445a', '#ffc409', '#2fdf75']
+    // domain: '#b1a398,#eb445a,#ffc409,#2fdf75'
+  };
 
   constructor(
     private authStateService: AuthStateService,

@@ -31,7 +31,7 @@
   <div *ngIf="hasLoadedRequests === false" class="error-container">
     <ion-icon name="warning" color="danger"></ion-icon>
     <ion-text color="danger">{{'LOADINGERROR.DATA' | translate}}</ion-text>
-    <ion-button mode="ios" (click)="filterEnquiries()">{{'LOADINGERROR.RELOAD' | translate}}</ion-button>
+    <ion-button mode="ios" (click)="filterRequests()">{{'LOADINGERROR.RELOAD' | translate}}</ion-button>
   </div>
 </ion-content>
 

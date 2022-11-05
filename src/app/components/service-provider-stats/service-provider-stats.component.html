@@ -112,14 +112,13 @@
     <ion-row>
       <ion-col *ngIf="statisticsPieChart.length > 0">
         <ngx-charts-pie-chart
-          [scheme]="pieChartOptions.colorScheme"
+          [scheme]="colorScheme"
           [results]="statisticsPieChart"
-          [gradient]="pieChartOptions.gradient"
+          [gradient]="gradient"
           [legend]="showLegend"
-          [legendPosition]="pieChartOptions.legendPosition"
-          [labels]="pieChartOptions.showLabels"
-          [doughnut]="pieChartOptions.isDoughnut"
-          [view]="pieChartOptions.view"
+          [labels]="showLabels"
+          [doughnut]="isDoughnut"
+          [view]="view"
         >
         </ngx-charts-pie-chart>
       </ion-col>
