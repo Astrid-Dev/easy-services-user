@@ -100,10 +100,8 @@ export class AccountComponent implements OnInit {
         .then((res) =>{
           console.log(res);
           this.isProcessing = false;
-          this.screenService.presentSuccessAlert({
-            mode: "ios",
-            message: this.translationService.getValueOf("ACCOUNT.SUCCESSFULEDITION"),
-            buttons: ["OK"]
+          this.screenService.presentToast({
+            message: this.translationService.getValueOf("ACCOUNT.SUCCESSFULEDITION")
           });
         })
         .catch((err) =>{

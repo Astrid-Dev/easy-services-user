@@ -207,10 +207,8 @@ export class ServiceProviderRequestDetailsComponent implements OnInit {
         }
         this.isProcessing = false;
         let temp = this.currentAction === 'cancellation' ? 'ENQUIRYACTIONS.SUCCESSABANDON' : this.currentAction === 'approbation' ? 'ENQUIRYACTIONS.SUCCESSAPPROBATION' : 'ENQUIRYACTIONS.SUCCESSMAKEOFFER';
-        this.screenService.presentSuccessAlert({
-          mode: "ios",
-          message: this.translationService.getValueOf(temp),
-          buttons: ["OK"]
+        this.screenService.presentToast({
+          message: this.translationService.getValueOf(temp)
         });
       })
       .catch((err) =>{

@@ -58,20 +58,12 @@ export class LoginComponent implements OnInit {
         .then((res: any) =>{
           this.isProcessing = false;
           this.loginForm.reset();
-          console.log(res);
+          this.formIsSubmitted = false;
           this.notificationService.loadNotifications();
-          this.screenService.presentSuccessAlert({
-            mode: "ios",
+          this.screenService.presentToast({
             message: (this.translationService.getValueOf(this.userIsNewer ? "LOGIN.WELCOME" : "LOGIN.SEEAGAIN") + ", " + res.user.username) + " ! "+ this.translationService.getValueOf("LOGIN.SUCCESS"),
-            buttons: [
-              {
-                text: 'OK',
-                handler: () => {
-                  this.router.navigate(["home"]);
-                }
-              }
-            ]
           });
+          this.router.navigate(["home"]);
         })
         .catch((err) =>{
           this.isProcessing = false;

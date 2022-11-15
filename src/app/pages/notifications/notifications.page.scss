@@ -11,14 +11,18 @@ ion-card-header{
   padding-right: 0;
 }
 
+.notification-title{
+  padding-bottom: 0;
+}
+
 .creation-date {
-  text-align: right;
+  padding-top: 0;
   ion-note {
     font-size: 0.6em;
   }
 }
 
-ion-card-title ion-row ion-col, div{
+ion-card-title ion-row ion-col, div, ion-col span, ion-col ion-note{
   width: 100%;
   white-space: nowrap;
   overflow: hidden !important;

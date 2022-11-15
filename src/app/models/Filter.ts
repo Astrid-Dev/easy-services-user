@@ -2,6 +2,7 @@ export interface Filter {
   order_by: OrderType;
   order_direction: OrderDirection;
   states: string;
+  services: number[];
 }
 
 export enum OrderType{
@@ -22,3 +23,24 @@ export enum State{
   APPROVED,
   RESOLVED
 }
+
+export enum Period{
+  TODAY,
+  ALL,
+  CUSTOM
+}
+
+export interface NotificationsFilter{
+  order_direction: OrderDirection;
+  state: NotificationState;
+  period: Period;
+  starting_date?: string;
+  ending_date?: string;
+}
+
+export enum NotificationState{
+  READED,
+  UNREADED,
+  ALL
+}
+

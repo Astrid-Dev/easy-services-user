@@ -16,6 +16,9 @@ import {NewEnquiryComponent} from "./components/new-enquiry/new-enquiry.componen
 import {AuthInterceptor} from "./helpers/auth.interceptor";
 import { ServiceProviderRegistrationComponent } from './components/service-provider-registration/service-provider-registration.component';
 import {HomeComponent} from "./components/home/home.component";
+import {NotificationsFilteringComponent} from "./components/notifications-filtering/notifications-filtering.component";
+import {CategoriesListComponent} from "./components/categories-list/categories-list.component";
+import {FcmTokenInterceptor} from "./helpers/fcm-token.interceptor";
 
 @NgModule({
   declarations: [
@@ -25,7 +28,9 @@ import {HomeComponent} from "./components/home/home.component";
     WelcomeComponent,
     NewEnquiryComponent,
     ServiceProviderRegistrationComponent,
-    HomeComponent
+    HomeComponent,
+    NotificationsFilteringComponent,
+    CategoriesListComponent
   ],
   imports: [
     BrowserModule, IonicModule.forRoot(), AppRoutingModule,
@@ -45,8 +50,13 @@ import {HomeComponent} from "./components/home/home.component";
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
       multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: FcmTokenInterceptor,
+      multi: true
     }
-    ],
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {

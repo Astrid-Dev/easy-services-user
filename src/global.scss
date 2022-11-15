@@ -151,3 +151,15 @@ ion-button{
 .no-result-found ion-text{
   font-style: italic;
 }
+
+ion-row ion-col div{
+  display: flex;
+  align-items: center;
+}
+
+ion-row ion-col div ion-text{
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden !important;
+  text-overflow: ellipsis;
+}

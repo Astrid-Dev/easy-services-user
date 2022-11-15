@@ -7,6 +7,7 @@ import {NewEnquiryComponent} from './components/new-enquiry/new-enquiry.componen
 import {CanLogOutGuard} from './helpers/can-log-out.guard';
 import {CanLogInGuard} from './helpers/can-log-in.guard';
 import { ServiceProviderRegistrationComponent } from './components/service-provider-registration/service-provider-registration.component';
+import {CategoriesListComponent} from "./components/categories-list/categories-list.component";
 
 const routes: Routes = [
   {
@@ -32,6 +33,11 @@ const routes: Routes = [
   {
     path: 'new',
     component: NewEnquiryComponent,
+    canActivate: [CanLogOutGuard]
+  },
+  {
+    path: 'categories',
+    component: CategoriesListComponent,
     canActivate: [CanLogOutGuard]
   },
   {

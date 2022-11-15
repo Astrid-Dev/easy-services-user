@@ -1,4 +1,5 @@
 import {State} from "../models/Filter";
+import {environment} from "../../environments/environment";
 
 export const workHoursList = [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17];
 
@@ -35,7 +36,7 @@ export function printReadableDateComparedToDelay(date: Date, lang: string){
   let incomingTime = date.getTime();
   let currentDate = new Date().getDate();
   let incomingDate = date.getDate();
-  let result = printReadableDate(date, lang, true) as string;
+  let result = printReadableDate(date, lang, true, true) as string;
 
   if(incomingTime <= currentTime){
     if(incomingTime >= (currentTime - ONE_MINUTE_IN_MILLISECONDS)){
@@ -376,4 +377,22 @@ function getANumberWithComma(value: number, numbersAfterComma: number){
   }
 
   return numbersAfterComma > 0 ? (result + comma) : value;
+}
+
+export function getARemoteResourcePath(short_path: string){
+  return environment.BACKEND_URL + short_path;
+}
+
+export function getRandomInt(min: number, max: number, notConsidarate: number[] = null): number {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  let value = Math.floor(Math.random() * (max - min + 1)) + min;
+  if(notConsidarate !== null && notConsidarate.includes(value))
+  {
+    return getRandomInt(min, max, notConsidarate);
+  }
+  else{
+    return value;
+  }
+
 }

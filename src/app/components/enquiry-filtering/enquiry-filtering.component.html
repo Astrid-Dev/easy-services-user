@@ -10,6 +10,28 @@
 
 <ion-content color="custom3">
   <ion-list>
+
+    <ion-item-divider>
+      <ion-label>{{'ENQUIRYFILTERING.SERVICES' | translate}}</ion-label>
+    </ion-item-divider>
+    <ion-accordion-group expand="inset">
+      <ion-accordion [value]="'accordion'+i" color="warning" *ngFor="let item of servicesList; let i = index;">
+        <ion-item slot="header" color="light">
+          <ion-text>{{label(item.parent)}}</ion-text>
+        </ion-item>
+        <div class="ion-padding" slot="content">
+          <ion-item>
+            <ion-text>{{'SUBMIT.SELECTALL' | translate}}</ion-text>
+            <ion-checkbox [disabled]="item.parent.hasCheckedAllChildren" (ngModelChange)="onCheckAllChildOfAService(item.parent.id)" [(ngModel)]="item.parent.hasCheckedAllChildren" slot="start"></ion-checkbox>
+          </ion-item>
+          <ion-item lines="none" *ngFor="let service of item.children; index as i">
+            <ion-text>{{label(service)}}</ion-text>
+            <ion-checkbox (ngModelChange)="onChildServiceChange(item.parent.id, service.id)" [(ngModel)]="service.isChecked" slot="start"></ion-checkbox>
+          </ion-item>
+        </div>
+      </ion-accordion>
+    </ion-accordion-group>
+
     <ion-item-divider>
       <ion-label>{{'ENQUIRYFILTERING.STATUS' | translate}}</ion-label>
     </ion-item-divider>

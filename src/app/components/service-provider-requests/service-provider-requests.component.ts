@@ -33,7 +33,8 @@ export class ServiceProviderRequestsComponent implements OnInit {
   filter: Filter = {
     order_by: OrderType.CREATION_DATE,
     order_direction: OrderDirection.DESCENDANT,
-    states: ""
+    states: "",
+    services: []
   }
 
   constructor(
@@ -110,6 +111,12 @@ export class ServiceProviderRequestsComponent implements OnInit {
         value: this.filter.states
       });
     }
+    if(this.filter.services.length > 0) {
+      otherParams.push({
+        key: 'services',
+        value: this.filter.services.join(',')
+      });
+    }
 
     otherParams.push(
       {
@@ -169,6 +176,7 @@ export class ServiceProviderRequestsComponent implements OnInit {
         if(event.data)
         {
           this.filter = event.data;
+          console.log(this.filter)
           this.filterRequests();
         }
       })

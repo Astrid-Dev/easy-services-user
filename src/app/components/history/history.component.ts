@@ -35,7 +35,8 @@ export class HistoryComponent implements OnInit {
   filter: Filter = {
     order_by: OrderType.CREATION_DATE,
     order_direction: OrderDirection.DESCENDANT,
-    states: ""
+    states: "",
+    services: []
   }
 
   constructor(
@@ -115,6 +116,10 @@ export class HistoryComponent implements OnInit {
 
     if(this.filter.states !== '') {
       otherParams += ('&states=' + this.filter.states)
+    }
+
+    if(this.filter.services.length > 0){
+      otherParams += ('&services=' + this.filter.services.join(','));
     }
 
     otherParams += ('&order_by=' + this.filter.order_by);

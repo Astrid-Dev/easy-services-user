@@ -7,6 +7,7 @@ import {Router} from "@angular/router";
 import {AuthService} from "../../services/auth.service";
 import {User} from "../../models/User";
 import {PhoneValidator} from "../../helpers/phone.validator";
+import {NotificationService} from "../../services/notification.service";
 
 @Component({
   selector: 'app-register',
@@ -24,7 +25,8 @@ export class RegisterComponent implements OnInit {
     private screenService: ScreenService,
     private translationService: TranslationService,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private notificationService: NotificationService
   ) {
     this.registerForm = this.formBuilder.group({
       username: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]],
@@ -74,20 +76,52 @@ export class RegisterComponent implements OnInit {
       }
       this.authService.register(user)
         .then((res) =>{
-          this.isProcessing = false;
 
-          this.screenService.presentSuccessAlert({
-            mode: "ios",
-            message: this.translationService.getValueOf("REGISTER.SUCCESS"),
-            buttons: [
-              {
-                text: 'OK',
-                handler: () => {
-                  this.router.navigate(["login"], {state:{userIsNewer: true}});
-                }
-              }
-            ]
-          });
+          let registeredUser:User = {
+            email: user.email,
+            password: user.password
+          }
+          this.authService.login(registeredUser)
+            .then((res: any) =>{
+              this.isProcessing = false;
+              this.notificationService.loadNotifications();
+              this.registerForm.reset();
+              this.formIsSubmitted = false;
+              this.screenService.presentToast({
+                message: (this.translationService.getValueOf("LOGIN.WELCOME") + ", " + res.user.username) + " ! "+ this.translationService.getValueOf("LOGIN.SUCCESS"),
+              });
+              this.router.navigate(["home"]);
+            })
+            .catch((err) =>{
+              this.isProcessing = false;
+              console.error(err);
+              this.router.navigate(["login"], {state:{userIsNewer: true}});
+
+              // let message = this.translationService.getValueOf("LOGIN.ERROR");
+              // if(err.status === 401) {
+              //   message = this.translationService.getValueOf("LOGIN.VALIDATORERROR");
+              // }
+              // this.screenService.presentErrorAlert({
+              //   mode: "ios",
+              //   message: message,
+              //   buttons: ["OK"]
+              // });
+            });
+
+          // this.isProcessing = false;
+          //
+          // this.screenService.presentSuccessAlert({
+          //   mode: "ios",
+          //   message: this.translationService.getValueOf("REGISTER.SUCCESS"),
+          //   buttons: [
+          //     {
+          //       text: 'OK',
+          //       handler: () => {
+          //         this.router.navigate(["login"], {state:{userIsNewer: true}});
+          //       }
+          //     }
+          //   ]
+          // });
         })
         .catch((err) =>{
           this.isProcessing = false;

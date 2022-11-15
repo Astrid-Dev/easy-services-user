@@ -1,0 +1,31 @@
+<ion-header>
+  <ion-toolbar color="secondary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{'CATEGORIESLIST.TITLE' | translate}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="!hasLoadedServices">
+  <div class="loading-container" *ngIf="hasLoadedServices === null">
+    <ion-spinner mode="ios" color="secondary"></ion-spinner>
+  </div>
+  <div *ngIf="hasLoadedServices === false" class="error-container">
+    <ion-icon name="warning" color="danger"></ion-icon>
+    <ion-text color="danger">{{'LOADINGERROR.DATA' | translate}}</ion-text>
+    <ion-button mode="ios" (click)="loadServices()">{{'LOADINGERROR.RELOAD' | translate}}</ion-button>
+  </div>
+</ion-content>
+
+<ion-content color="custom3" *ngIf="hasLoadedServices">
+
+  <div class="categories-list">
+    <ion-card class="ion-ripple-parent ion-activatable category-item" *ngFor="let category of servicesList">
+      <img class="ion-padding service-illustration" [src]="categoryImageIllustration(category.parent.illustration)" [alt]="label(category.parent)"/>
+      <ion-text class="overlay-text">{{label(category.parent)}}</ion-text>
+      <ion-ripple-effect></ion-ripple-effect>
+    </ion-card>
+  </div>
+
+</ion-content>

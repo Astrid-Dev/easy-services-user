@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {AlertController, ModalController} from '@ionic/angular';
+import {AlertController, ModalController, ToastController} from '@ionic/angular';
 import {TranslationService} from './translation.service';
 
 @Injectable({
@@ -10,7 +10,8 @@ export class ScreenService {
   constructor(
     private translationService: TranslationService,
     private alertController: AlertController,
-    private modalController: ModalController
+    private modalController: ModalController,
+    private toastController: ToastController
   ) { }
 
   async presentAlert(options: any) {
@@ -21,7 +22,7 @@ export class ScreenService {
     await alert.present();
   }
 
-  async presentSuccessAlert(options: any)
+  async presentSuccesxsAlert(options: any)
   {
     const message = typeof options.message === 'undefined' ? 'Success message' : options.message;
     const alert = await this.alertController.create({
@@ -90,5 +91,15 @@ export class ScreenService {
     const modal = this.modalController.create({
       ...options
     })
+  }
+
+  async presentToast(options: any) {
+    const toast = await this.toastController.create({
+      icon: 'checkmark-circle',
+      duration: 2000,
+      ...options
+    });
+
+    await toast.present();
   }
 }

@@ -20,6 +20,7 @@ import {Router} from "@angular/router";
 import {User} from "../../models/User";
 import {AuthStateService} from "../../services/auth-state.service";
 import {GeolocationService} from "../../services/geolocation.service";
+import {CategoryService} from "../../services/category.service";
 
 SwiperCore.use([EffectFade]);
 
@@ -69,6 +70,7 @@ export class NewEnquiryComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private enquiryService: EnquiryService,
+    private categoryService: CategoryService,
     private translationService: TranslationService,
     private screenService: ScreenService,
     private router: Router,
@@ -160,7 +162,7 @@ export class NewEnquiryComponent implements OnInit {
   loadServices(){
     this.hasLoadedServices = null;
 
-    this.enquiryService.getAllServices()
+    this.categoryService.getAllServices()
       .then((res: any) =>{
         this.servicesList = [];
         res.filter((elt: Service) => elt.parent_id === null)

@@ -21,6 +21,7 @@ import {AuthStateService} from "../services/auth-state.service";
 import {NgxChartsModule} from "@swimlane/ngx-charts";
 import {GeolocationService} from "../services/geolocation.service";
 import {ThemeService} from "../services/theme.service";
+import {PushNotificationsService} from "../services/push-notifications.service";
 
 @NgModule({
   imports: [
@@ -73,7 +74,8 @@ export class SharedModule {
         TokenService,
         AuthStateService,
         GeolocationService,
-        ThemeService
+        ThemeService,
+        PushNotificationsService
       ]
     };
   }

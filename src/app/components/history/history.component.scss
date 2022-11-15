@@ -62,9 +62,22 @@ ion-card-header{
   }
 }
 
-ion-card-title ion-row ion-col, ion-card-subtitle, div{
+ion-card-title ion-row ion-col, ion-card-subtitle, ion-col div, ion-col div ion-text{
   width: 100%;
   white-space: nowrap;
   overflow: hidden !important;
   text-overflow: ellipsis;
+}
+
+ion-card-content{
+  //padding-top: 0;
+}
+
+ion-card-header{
+  padding-bottom: 0;
+}
+
+ion-col div{
+  display: flex;
+  align-items: center;
 }

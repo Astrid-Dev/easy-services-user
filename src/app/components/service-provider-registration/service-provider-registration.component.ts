@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import {Service, ServiceSelection, ServiceStructure} from "../../models/Service";
+import {Service, ServiceSelection} from "../../models/Service";
 import {User} from "../../models/User";
 import {AuthStateService} from "../../services/auth-state.service";
-import {EnquiryService} from "../../services/enquiry.service";
 import {TranslationService} from "../../services/translation.service";
 import {ServiceProviderService} from "../../services/service-provider.service";
 import {ScreenService} from "../../services/screen.service";
 import {Router} from "@angular/router";
+import {CategoryService} from "../../services/category.service";
 
 @Component({
   selector: 'app-service-provider-registration',
@@ -24,7 +24,7 @@ export class ServiceProviderRegistrationComponent implements OnInit {
 
   constructor(
     private authStateService: AuthStateService,
-    private enquiryService: EnquiryService,
+    private categoryService: CategoryService,
     private translationService: TranslationService,
     private serviceProviderService: ServiceProviderService,
     private screenService: ScreenService,
@@ -70,7 +70,7 @@ export class ServiceProviderRegistrationComponent implements OnInit {
   loadServices(){
     this.hasLoadedServices = null;
 
-    this.enquiryService.getAllServices()
+    this.categoryService.getAllServices()
       .then((res: any) =>{
         this.servicesList = [];
         res.filter((elt: Service) => elt.parent_id === null)
@@ -155,16 +155,10 @@ export class ServiceProviderRegistrationComponent implements OnInit {
         }
         this.authStateService.setUserData(this.user);
         this.isProcessing = false;
-        this.screenService.presentSuccessAlert({
-          mode: 'ios',
+        this.screenService.presentToast({
           message: this.translationService.getValueOf('SERVICEPROVIDERPROFILE.SERVICEPROVIDERREGISTRATIONSUCCESS'),
-          buttons: [{
-            text: 'OK',
-            handler: () =>{
-              this.router.navigate(["dashboard"])
-            }
-          }]
         });
+        this.router.navigate(["dashboard"]);
       })
       .catch((err) =>{
         console.error(err);

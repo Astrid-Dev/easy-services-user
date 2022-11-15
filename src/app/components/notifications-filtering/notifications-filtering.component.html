@@ -1,0 +1,98 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button fill="clear" (click)="cancel()">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content color="custom3">
+  <ion-list>
+
+    <ion-item-divider>
+      <ion-label>Période</ion-label>
+    </ion-item-divider>
+
+    <ion-item-group>
+      <ion-item lines="none">
+        <ion-select mode="ios" [(ngModel)]="filter.period">
+          <ion-select-option [value]="0">Aujourd'hui</ion-select-option>
+          <ion-select-option [value]="1">Tout le temps</ion-select-option>
+          <ion-select-option [value]="2">Choisir une période</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ng-container *ngIf="filter.period === 2">
+        <ion-text class="input-label ion-padding-start ion-padding-top">
+          Début
+        </ion-text>
+        <ion-item lines="none">
+          <ion-datetime-button mode="ios" datetime="starting-period-time"></ion-datetime-button>
+
+          <ion-modal [keepContentsMounted]="true" mode="ios">
+            <ng-template>
+              <ion-datetime [showDefaultButtons]="true" doneText="{{'SUBMIT.DONE' | translate}}"
+                            cancelText="{{'SUBMIT.CANCEL' | translate}}"
+                            [preferWheel]="true"
+                            [(ngModel)]="startingDate"
+                            mode="ios" id="starting-period-time"></ion-datetime>
+            </ng-template>
+          </ion-modal>
+        </ion-item>
+
+        <ion-text class="input-label ion-padding-start ion-padding-top">
+          Fin
+        </ion-text>
+        <ion-item lines="none">
+          <ion-datetime-button mode="ios" datetime="ending-period-time"></ion-datetime-button>
+
+          <ion-modal [keepContentsMounted]="true" mode="ios">
+            <ng-template>
+              <ion-datetime [showDefaultButtons]="true" doneText="{{'SUBMIT.DONE' | translate}}"
+                            cancelText="{{'SUBMIT.CANCEL' | translate}}"
+                            [preferWheel]="true"
+                            [(ngModel)]="endingDate"
+                            mode="ios" id="ending-period-time"></ion-datetime>
+            </ng-template>
+          </ion-modal>
+        </ion-item>
+      </ng-container>
+    </ion-item-group>
+
+    <ion-item-divider>
+      <ion-label>Statut</ion-label>
+    </ion-item-divider>
+
+    <ion-item-group>
+      <ion-item lines="none" *ngFor="let state of states; index as i">
+        <ion-text>{{state.label | translate}}</ion-text>
+        <ion-checkbox (ngModelChange)="onStateChange(i)" slot="start" [(ngModel)]="state.checked"></ion-checkbox>
+      </ion-item>
+    </ion-item-group>
+
+    <ion-item-divider>
+      <ion-label>{{'ENQUIRYFILTERING.SORTORDER' | translate}}</ion-label>
+    </ion-item-divider>
+
+    <ion-radio-group [(ngModel)]="filter.order_direction">
+      <ion-item lines="none" *ngFor="let orderDirection of orderDirections">
+        <ion-text>{{orderDirection.label | translate}}</ion-text>
+        <ion-radio slot="start" [value]="orderDirection.value"></ion-radio>
+      </ion-item>
+    </ion-radio-group>
+  </ion-list>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-row>
+      <ion-col>
+        <ion-button [disabled]="!canSubmit" (click)="onApply(true)" mode="ios" expand="block" fill="outline">{{'SUBMIT.CLEAR' | translate}}</ion-button>
+      </ion-col>
+      <ion-col>
+        <ion-button [disabled]="!canSubmit" (click)="onApply(false)" mode="ios" expand="block">{{'SUBMIT.APPLY' | translate}}</ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-toolbar>
+</ion-footer>

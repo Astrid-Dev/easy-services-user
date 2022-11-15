@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "58383526517",
+    "project_id": "easy-services-367220",
+    "storage_bucket": "easy-services-367220.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:58383526517:android:37b4bcc7e75b2e6139663c",
+        "android_client_info": {
+          "package_name": "com.worldevs.easyservices"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "58383526517-5lulj765pv89u5oirp2uct9ie1cgk97a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB6cGNbLhopkGHHGI-ghEGZPEY4G2oH320"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "58383526517-5lulj765pv89u5oirp2uct9ie1cgk97a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
