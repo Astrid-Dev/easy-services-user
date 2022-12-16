@@ -2,7 +2,6 @@ import {Component} from '@angular/core';
 import {TranslationService} from "./services/translation.service";
 import {NotificationService} from "./services/notification.service";
 import {ThemeService} from "./services/theme.service";
-import { PushNotificationsService } from './services/push-notifications.service';
 import {Platform} from "@ionic/angular";
 
 @Component({
@@ -16,7 +15,6 @@ export class AppComponent{
     private translationService: TranslationService,
     private notificationService: NotificationService,
     private themeService: ThemeService,
-    private pushNotificationsService: PushNotificationsService
   ){
     this.initializeApp();
   }
@@ -25,7 +23,7 @@ export class AppComponent{
     this.platform.ready().then(() => {
 
       // Trigger the push setup
-      this.pushNotificationsService.initPush();
+      this.notificationService.initPush();
     });
   }
 }

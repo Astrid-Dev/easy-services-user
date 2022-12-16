@@ -18,7 +18,6 @@ import { ServiceProviderRegistrationComponent } from './components/service-provi
 import {HomeComponent} from "./components/home/home.component";
 import {NotificationsFilteringComponent} from "./components/notifications-filtering/notifications-filtering.component";
 import {CategoriesListComponent} from "./components/categories-list/categories-list.component";
-import {FcmTokenInterceptor} from "./helpers/fcm-token.interceptor";
 
 @NgModule({
   declarations: [
@@ -49,11 +48,6 @@ import {FcmTokenInterceptor} from "./helpers/fcm-token.interceptor";
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
-      multi: true
-    },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: FcmTokenInterceptor,
       multi: true
     }
   ],

@@ -98,7 +98,7 @@ export class EnquiryService {
 
   updateAnEnquiry(enquiryId: number, newEnquiryData: any){
     return new Promise((resolve, reject) =>{
-      this.http.put(ENQUIRIES_URL+'/'+enquiryId, {...newEnquiryData, is_provider: false})
+      this.http.put(ENQUIRIES_URL+'/'+enquiryId, {...newEnquiryData, author: 'customer'})
         .subscribe({
           next: (res) =>{
             resolve(res);

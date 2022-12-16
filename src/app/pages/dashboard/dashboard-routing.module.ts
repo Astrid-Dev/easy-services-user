@@ -8,6 +8,7 @@ import {ServiceProviderCalendarComponent} from "../../components/service-provide
 import {ServiceProviderStatsComponent} from "../../components/service-provider-stats/service-provider-stats.component";
 import {ServiceProviderRequestDetailsComponent} from "../../components/service-provider-request-details/service-provider-request-details.component";
 import {ServiceProviderNotificationsComponent} from "../../components/service-provider-notifications/service-provider-notifications.component";
+import {IsSimpleEmployeeGuard} from "../../helpers/is-simple-employee.guard";
 
 const routes: Routes = [
   {
@@ -20,7 +21,8 @@ const routes: Routes = [
       },
       {
         path: 'profile',
-        component: ServiceProviderProfileComponent
+        component: ServiceProviderProfileComponent,
+        canActivate: [IsSimpleEmployeeGuard]
       },
       {
         path: 'requests',

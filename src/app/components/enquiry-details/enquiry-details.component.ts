@@ -6,7 +6,8 @@ import {Enquiry} from "../../models/Enquiry";
 import {
     getARequestStateColor, getARequestStateLabel,
     printReadableDate,
-    printReadableDateComparedToDelay
+    printReadableDateComparedToDelay,
+    getARemoteResourcePath
 } from "../../helpers/helpers.functions";
 import {Service} from "../../models/Service";
 import {User} from "../../models/User";
@@ -38,6 +39,8 @@ export class EnquiryDetailsComponent implements OnInit {
 
   isProcessing = false;
   currentAction: string = 'cancellation';
+
+  providerNote: number = 0;
 
   constructor(
       private router: Router,
@@ -72,6 +75,10 @@ export class EnquiryDetailsComponent implements OnInit {
     return this.enquiryData && ((this.enquiryData.state !== State.CREATED && this.enquiryData.state !== State.APPROVED) && (this.enquiryData.provider_price && this.enquiryData.provider_intervention_date));
   }
 
+  get canNoteProvider(){
+    return this.enquiryData && ((this.enquiryData.state === State.APPROVED) && (new Date().getTime() > (new Date(this.enquiryData.final_intervention_date).getTime() + (1000*60*30))));
+  }
+
   label(item: any){
     return (this.translationService.getCurrentLang() === 'fr' ? item.label : item.label_en) ?? '';
   }
@@ -93,6 +100,10 @@ export class EnquiryDetailsComponent implements OnInit {
 
   enquiryStateLabel(state: number){
     return this.translationService.getValueOf(getARequestStateLabel(state, false));
+  }
+
+  getRemoteImage(path: string){
+    return getARemoteResourcePath(path);
   }
 
   ngOnInit() {
@@ -182,9 +193,9 @@ export class EnquiryDetailsComponent implements OnInit {
     this.updateEnquiry(newRequestData);
   }
 
-  updateEnquiry(newRequestData: any){
+  updateEnquiry(newEnquiryData: any){
     this.isProcessing = true;
-    this._enquiryService.updateAnEnquiry(this.enquiryData.id, newRequestData)
+    this._enquiryService.updateAnEnquiry(this.enquiryData.id, newEnquiryData)
       .then((res: any) =>{
         console.log(res);
         this.enquiryData = {
@@ -193,8 +204,27 @@ export class EnquiryDetailsComponent implements OnInit {
         if(this.currentAction === 'cancellation'){
           this.enquiryProvider = null;
         }
+
+        let temp = '';
+        switch(this.currentAction){
+          case 'cancellation': {
+            temp = 'ENQUIRYACTIONS.SUCCESSABANDON';
+            break;
+          }
+          case 'resolution':{
+            temp = 'ENQUIRYACTIONS.SUCCESSESOLUTION';
+            break;
+          }
+          case 'approbation':{
+            temp = 'ENQUIRYACTIONS.SUCCESSAPPROBATION';
+            break;
+          }
+          default:{
+            temp = 'ENQUIRYACTIONS.SUCCESSMAKEOFFER'
+            break;
+          }
+        }
         this.isProcessing = false;
-        let temp = this.currentAction === 'cancellation' ? 'ENQUIRYACTIONS.SUCCESSABANDON' : this.currentAction === 'approbation' ? 'ENQUIRYACTIONS.SUCCESSAPPROBATION' : 'ENQUIRYACTIONS.SUCCESSMAKEOFFER';
         this.screenService.presentToast({
           message: this.translationService.getValueOf(temp),
         });
@@ -202,7 +232,25 @@ export class EnquiryDetailsComponent implements OnInit {
       .catch((err) =>{
         console.error(err);
         this.isProcessing = false;
-        let temp = this.currentAction === 'cancellation' ? 'ENQUIRYACTIONS.ERRORABANDON' : this.currentAction === 'approbation' ? 'ENQUIRYACTIONS.ERRORAPPROBATION' : 'ENQUIRYACTIONS.MAKEOFFERERROR';
+        let temp = '';
+        switch(this.currentAction){
+          case 'cancellation': {
+            temp = 'ENQUIRYACTIONS.ERRORABANDON';
+            break;
+          }
+          case 'resolution':{
+            temp = 'ENQUIRYACTIONS.ERRORRESOLUTION';
+            break;
+          }
+          case 'approbation':{
+            temp = 'ENQUIRYACTIONS.ERRORAPPROBATION';
+            break;
+          }
+          default:{
+            temp = 'ENQUIRYACTIONS.MAKEOFFERERROR'
+            break;
+          }
+        }
         this.screenService.presentErrorAlert({
           mode: "ios",
           message: this.translationService.getValueOf(temp),
@@ -248,6 +296,18 @@ export class EnquiryDetailsComponent implements OnInit {
         }
       })
     return await modal.present();
+  }
+
+  onNoteProvider(){
+    let newEnquiryData = {
+      ...this.enquiryData,
+      state: State.RESOLVED,
+      provider_rate: this.providerNote
+    }
+
+    this.currentAction = 'resolution';
+
+    this.updateEnquiry(newEnquiryData);
   }
 
 

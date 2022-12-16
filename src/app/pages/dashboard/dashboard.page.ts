@@ -12,7 +12,7 @@ import {NotificationService} from "../../services/notification.service";
 })
 export class DashboardPage implements OnInit {
 
-  navs:  (Nav & {isNotifications?: boolean}) [] = [
+  navs:  (Nav & {isNotifications?: boolean, shouldBeSimpleProvider?: boolean}) [] = [
     {
       label: 'UPDATEPASSWORD.DASHBOARD.SIDEMENU.DASHBOARD',
       link: '/dashboard/stats',
@@ -37,7 +37,8 @@ export class DashboardPage implements OnInit {
     {
       label: 'UPDATEPASSWORD.DASHBOARD.SIDEMENU.PROFILE',
       link: '/dashboard/profile',
-      icon: 'person-outline'
+      icon: 'person-outline',
+      shouldBeSimpleProvider: true
     },
     {
       label: 'UPDATEPASSWORD.DASHBOARD.SIDEMENU.EXIT',
@@ -71,6 +72,9 @@ export class DashboardPage implements OnInit {
     this.authStateService.getUserData()
       .then((userData) =>{
         this.user = userData ?? null;
+        if(this.user?.provider?.organization_id){
+          this.navs = this.navs.filter(elt => !elt.shouldBeSimpleProvider);
+        }
       })
       .catch((err) =>{
         console.error(err);

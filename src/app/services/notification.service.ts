@@ -5,6 +5,9 @@ import {Notification, NotificationEnum} from "../models/Notification";
 import Pusher from "pusher-js";
 import {AuthStateService} from "./auth-state.service";
 import {HttpClient} from "@angular/common/http";
+import {Capacitor} from "@capacitor/core";
+import {PushNotifications} from "@capacitor/push-notifications";
+import {Router} from "@angular/router";
 
 const NOTIFICATIONS_URL = `${environment.BACKEND_API_URL}notifications`;
 const NOTIFICATIONS_CHANNEL = 'notifications';
@@ -21,10 +24,11 @@ export class NotificationService{
   private enquiriesNotifications: Notification[] = [];
   private requestsNotifications: Notification[] = [];
   private allNotifications: Notification[] = [];
+  private deviveTokenForPushNotifications = null;
 
   hasLoadNotifications: boolean = false;
 
-  constructor(private authStateService: AuthStateService, private http: HttpClient) {
+  constructor(private authStateService: AuthStateService, private http: HttpClient, private router: Router) {
     this.loadNotifications();
     this.authStateService.getUserData()
       .then((user) =>{
@@ -47,7 +51,7 @@ export class NotificationService{
             this.enquiriesNotifications.unshift(notification);
           });
 
-          channel.bind((PROVIDER_REQUEST_NOTIFICATIONS_CHANNEL_EVENT+user.id), (data: any) => {
+          channel.bind((PROVIDER_REQUEST_NOTIFICATIONS_CHANNEL_EVENT+user?.provider?.id), (data: any) => {
             if(!this.hasLoadNotifications){
               this.loadNotifications();
             }
@@ -121,5 +125,53 @@ export class NotificationService{
           console.error(err);
         }
       })
+  }
+
+
+  ///////////////////
+
+  get deviceToken(){
+    return this.deviveTokenForPushNotifications;
+  }
+
+  initPush() {
+    if (Capacitor.getPlatform() !== 'web') {
+      this.registerPush();
+    }
+  }
+  private registerPush() {
+    PushNotifications.requestPermissions().then(permission => {
+      if (permission.receive === 'granted') {
+        PushNotifications.register();
+      }
+      else {
+        // If permission is not granted
+      }
+    });
+    PushNotifications.addListener('registration', (token) => {
+      this.deviveTokenForPushNotifications = token.value;
+      console.log(token);
+    });
+    PushNotifications.addListener('registrationError', (err)=> {
+      console.error(err);
+    });
+    PushNotifications.addListener('pushNotificationReceived', (notifications) => {
+      console.log(notifications);
+    });
+    PushNotifications.addListener('pushNotificationActionPerformed', (notification) => {
+      const data = notification.notification.data;
+      console.log('Action performed: ' + JSON.stringify(notification.notification));
+      this.onViewPushNotification(data);
+    });
+  }
+
+  private onViewPushNotification(notification: Notification){
+    this.readANotification(notification.id);
+    if(notification.reason === NotificationEnum.PROVIDER_REQUEST){
+      this.router.navigateByUrl('/dashboard/requests/'+notification.data?.enquiry_code);
+    }
+    else if(notification.reason === NotificationEnum.USER_ENQUIRY){
+      this.router.navigateByUrl('/history/'+notification.data?.enquiry_code);
+    }
   }
 }

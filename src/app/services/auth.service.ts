@@ -4,6 +4,7 @@ import {TokenService} from "./token.service";
 import {AuthStateService} from "./auth-state.service";
 import {User} from "../models/User";
 import {environment} from "../../environments/environment";
+import {NotificationService} from "./notification.service";
 
 const AUTH_URL = environment.BACKEND_API_URL + "auth/";
 const REGISTER_URL = AUTH_URL + "register";
@@ -18,7 +19,12 @@ const UPDATE_PASSWORD_URL = AUTH_URL + "update_password";
 })
 export class AuthService {
 
-  constructor(private http: HttpClient, private tokenService: TokenService, private authStateService: AuthStateService) { }
+  constructor(
+    private http: HttpClient,
+    private tokenService: TokenService,
+    private authStateService: AuthStateService,
+    private notificationService: NotificationService
+  ) { }
 
   register(userData: User)
   {
@@ -37,8 +43,18 @@ export class AuthService {
 
   login(userData: any)
   {
+    let data = {
+      ...userData
+    }
+
+    if(this.notificationService.deviceToken){
+      data = {
+        ...data,
+        device_token: this.notificationService.deviceToken
+      }
+    }
     return new Promise((resolve, reject) => {
-      this.http.post(LOGIN_URL, userData)
+      this.http.post(LOGIN_URL, data)
         .subscribe(
           (res: any) =>{
             this.authStateService.setUserData(res.user);
@@ -58,7 +74,7 @@ export class AuthService {
       this.http.post(LOGOUT_URL, null)
         .subscribe(
           res =>{
-            this.perfomLogOut();
+            this.performLogOut();
             resolve(res);
           },
           err =>{
@@ -68,7 +84,7 @@ export class AuthService {
     });
   }
 
-  perfomLogOut()
+  performLogOut()
   {
     this.authStateService.  setAuthState(false);
     this.tokenService.removeToken();

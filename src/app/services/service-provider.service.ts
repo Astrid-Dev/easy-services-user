@@ -112,7 +112,7 @@ export class ServiceProviderService {
   updateARequest(requestId: number, newRequestData: any)
   {
     return new Promise(((resolve, reject) => {
-      this.http.put(SERVICE_PROVIDER_REQUESTS_URL+'/'+requestId, {...newRequestData, is_provider: true})
+      this.http.put(SERVICE_PROVIDER_REQUESTS_URL+'/'+requestId, {...newRequestData, author: 'provider'})
         .subscribe({
           next: (res) =>{
             resolve(res);

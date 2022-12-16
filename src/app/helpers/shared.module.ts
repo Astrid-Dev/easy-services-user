@@ -21,13 +21,11 @@ import {AuthStateService} from "../services/auth-state.service";
 import {NgxChartsModule} from "@swimlane/ngx-charts";
 import {GeolocationService} from "../services/geolocation.service";
 import {ThemeService} from "../services/theme.service";
-import {PushNotificationsService} from "../services/push-notifications.service";
 
 @NgModule({
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    HttpClientModule,
     HttpClientModule,
     TranslateModule.forChild({
       loader: {
@@ -75,7 +73,6 @@ export class SharedModule {
         AuthStateService,
         GeolocationService,
         ThemeService,
-        PushNotificationsService
       ]
     };
   }

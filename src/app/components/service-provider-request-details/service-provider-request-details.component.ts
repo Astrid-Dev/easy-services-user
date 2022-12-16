@@ -65,15 +65,15 @@ export class ServiceProviderRequestDetailsComponent implements OnInit {
   }
 
   get canCancel(){
-    return this.requestData && this.requestData.state !== State.CREATED;
+    return !this.user?.provider?.organization_id && this.requestData && this.requestData.state !== State.CREATED;
   }
 
   get canNegotiate(){
-    return this.requestData && this.requestData.state !== State.APPROVED;
+    return !this.user?.provider?.organization_id && this.requestData && this.requestData.state !== State.APPROVED;
   }
 
   get canApprove(){
-    return this.requestData && (this.requestData.state !== State.CREATED && this.requestData.user_price && this.requestData.user_intervention_date);
+    return !this.user?.provider?.organization_id && this.requestData && (this.requestData.state !== State.CREATED && this.requestData.user_price && this.requestData.user_intervention_date);
   }
 
   label(item: any){

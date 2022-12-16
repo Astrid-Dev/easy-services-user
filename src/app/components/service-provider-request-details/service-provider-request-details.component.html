@@ -155,7 +155,7 @@
   </ion-fab>
 </ion-content>
 
-<ion-footer *ngIf="hasLoadedRequestData && hasLoadedUserData">
+<ion-footer *ngIf="hasLoadedRequestData && hasLoadedUserData && !user?.provider?.organization_id">
   <ion-toolbar *ngIf="requestData && requestData.state !== 4">
     <ion-row *ngIf="!isProcessing">
       <ion-col *ngIf="canCancel">

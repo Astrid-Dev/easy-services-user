@@ -55,6 +55,40 @@
     </ion-card>
   </ng-container>
 
+  <ng-container *ngIf="enquiryProvider?.organization">
+    <ion-item-divider>
+      <ion-label>{{'ENQUIRYDETAILS.ABOUTORGANIZATION' | translate}}</ion-label>
+    </ion-item-divider>
+    <ion-card>
+      <ion-item color="custom3">
+        <ion-avatar slot="start">
+          <img alt="Silhouette of a person's head" [src]="getRemoteImage(enquiryProvider?.organization?.logo)" />
+        </ion-avatar>
+        <ion-card-header>
+          <ion-card-title>{{enquiryProvider?.organization?.name}}</ion-card-title>
+          <ion-card-subtitle>
+            <ion-row>
+              <ion-col>
+                <div class="contact-item">
+                  <ion-icon class="contact-icon" name="mail-outline"></ion-icon>
+                  <ion-text>{{enquiryProvider?.organization.email1}}</ion-text>
+                </div>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col>
+                <div class="contact-item">
+                  <ion-icon class="contact-icon" name="call-outline"></ion-icon>
+                  <ion-text>{{enquiryProvider?.organization.phone_number1}}</ion-text>
+                </div>
+              </ion-col>
+            </ion-row>
+          </ion-card-subtitle>
+        </ion-card-header>
+      </ion-item>
+    </ion-card>
+  </ng-container>
+
   <ng-container *ngIf="enquiryData.state !== 0">
     <ion-item-divider>
       <ion-label>{{'ENQUIRYDETAILS.ABOUTTRADING' | translate}}</ion-label>
@@ -158,6 +192,21 @@
       </ion-col>
       <ion-col *ngIf="canApprove">
         <ion-button (click)="askConfirmation('approbation')" color="success" mode="ios" expand="block">{{'SUBMIT.APPROVE' | translate}}</ion-button>
+      </ion-col>
+
+      <ion-col *ngIf="canNoteProvider">
+        <ion-label style="display: block" class="ion-text-center">{{'SUBMIT.PROVIDERRATE' | translate}}</ion-label>
+        <ionic-rating-component #rating
+                                style="display: flex; justify-content: center; align-items: center"
+                                class="ion-margin-bottom"
+                                [(ngModel)]="providerNote"
+                                activeIcon = "star"
+                                defaultIcon = "star-outline"
+                                activeColor = "#ffc409"
+                                defaultColor = "#f4f4f4"
+                                fontSize = "1.3em">
+        </ionic-rating-component>
+        <ion-button [disabled]="providerNote === 0" (click)="onNoteProvider()" color="primary" mode="ios" expand="block">{{'SUBMIT.RESOLVE' | translate}}</ion-button>
       </ion-col>
     </ion-row>
     <ion-row *ngIf="isProcessing">
